@@ -1,0 +1,722 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Zulfa Boutiq - Luxury Contemporary Haute Couture, Bespoke Bridal Wear, Festive Silks, and Pret-a-Porter for the modern woman." />
+  <meta name="keywords" content="Zulfa Boutiq, Luxury Boutique, Bridal Lehenga, Anarkali, Velvet Gown, Modest Fashion, Pakistani Couture, Indian Wedding Wear, Haute Couture, Bespoke Fashion" />
+  <title>Zulfa Boutiq | Luxury Haute Couture &amp; Festive Pr&ecirc;t</title>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+
+  <!-- Font Awesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+  <!-- ==========================================================================
+       Announcement Bar
+       ========================================================================== -->
+  <aside class="announcement-bar">
+    <div class="container announcement-inner">
+      <div class="announcement-left">
+        <span><i class="fa-solid fa-location-dot"></i> Flagship Atelier & Worldwide Shipping</span>
+      </div>
+      <div class="announcement-center">
+        <span>&#10024; <strong>EID &amp; FESTIVE DROPS</strong> &mdash; Complimentary Express Delivery on Orders Over $200 with code <strong>ZULFA10</strong></span>
+      </div>
+      <div class="announcement-right">
+        <a href="https://wa.me/919876543210" target="_blank" rel="noopener">
+          <i class="fa-brands fa-whatsapp"></i> VIP Concierge: +91 98765 43210
+        </a>
+      </div>
+    </div>
+  </aside>
+
+  <!-- ==========================================================================
+       Header & Navigation
+       ========================================================================== -->
+  <header class="site-header">
+    <div class="container header-inner">
+      <!-- Brand Logo -->
+      <a href="#" class="brand-logo">
+        <span class="brand-name">ZULFA</span>
+        <span class="brand-sub">BOUTIQ</span>
+      </a>
+
+      <!-- Desktop Navigation -->
+      <nav class="main-nav">
+        <a href="#hero" class="nav-link active">Home</a>
+        <a href="#curated" class="nav-link">Trends</a>
+        <a href="#collection" class="nav-link">Collections</a>
+        <a href="#craft" class="nav-link">Craftsmanship</a>
+        <a href="#consultation" class="nav-link">Bespoke Fitting</a>
+        <a href="#reviews" class="nav-link">Stories</a>
+      </nav>
+
+      <!-- Action Buttons -->
+      <div class="header-actions">
+        <!-- Search Trigger -->
+        <button class="action-btn trigger-search" title="Search Collections">
+          <i class="fa-solid fa-magnifying-glass"></i>
+        </button>
+
+        <!-- Wishlist -->
+        <button class="action-btn trigger-wishlist" title="View Wishlist" onclick="document.getElementById('collection').scrollIntoView({behavior: 'smooth'})">
+          <i class="fa-regular fa-heart"></i>
+          <span class="action-badge" id="wishlist-badge" style="display: none;">0</span>
+        </button>
+
+        <!-- Shopping Cart Trigger -->
+        <button class="action-btn trigger-cart" title="Shopping Bag">
+          <i class="fa-solid fa-bag-shopping"></i>
+          <span class="action-badge" id="cart-badge" style="display: none;">0</span>
+        </button>
+
+        <!-- WhatsApp Quick Chat -->
+        <a href="https://wa.me/919876543210?text=Hello%20Zulfa%20Boutiq!%20I%20would%20like%20to%20inquire%20about%20your%20couture%20collection." 
+           target="_blank" 
+           rel="noopener" 
+           class="whatsapp-direct-btn">
+          <i class="fa-brands fa-whatsapp"></i>
+          <span>Order on WhatsApp</span>
+        </a>
+
+        <!-- Mobile Menu Hamburger -->
+        <button class="action-btn menu-toggle-btn" id="menu-toggle-btn" aria-label="Toggle Menu">
+          <i class="fa-solid fa-bars-staggered"></i>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- ==========================================================================
+       Hero Section
+       ========================================================================== -->
+  <section class="hero-section" id="hero">
+    <div class="container hero-grid">
+      <div class="hero-content">
+        <span class="hero-badge">
+          <i class="fa-solid fa-gem"></i> 2026 Haute Couture Drop
+        </span>
+        <h1 class="hero-title">
+          Timeless Elegance, <br />
+          <em>Modern Craftsmanship</em>
+        </h1>
+        <p class="hero-desc">
+          Step into Zulfa Boutiq — where ancestral South Asian needlework meets contemporary high-fashion silhouettes. Handcrafted bridal lehengas, micro-velvet ensembles, and fluid raw silks tailored for the unforgettable moments of your life.
+        </p>
+        <div class="hero-ctas">
+          <a href="#collection" class="btn btn-primary">
+            Explore Collection <i class="fa-solid fa-arrow-right"></i>
+          </a>
+          <a href="#consultation" class="btn btn-outline">
+            <i class="fa-regular fa-calendar-check"></i> Book VIP Fitting
+          </a>
+        </div>
+        <div class="hero-stats">
+          <div class="stat-item">
+            <h4>4,500+</h4>
+            <p>Bespoke Clients</p>
+          </div>
+          <div class="stat-item">
+            <h4>100%</h4>
+            <p>Pure Handcraft</p>
+          </div>
+          <div class="stat-item">
+            <h4>35+</h4>
+            <p>Countries Shipped</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="hero-visual">
+        <div class="hero-main-card">
+          <img src="https://images.unsplash.com/photo-1583391733956-3750e0ff4e8b?q=80&w=1000&auto=format&fit=crop" 
+               alt="Zulfa Boutiq Signature Crimson Bridal Ensemble" />
+          <div class="hero-tag-pill">Haute Couture 2026</div>
+        </div>
+        <!-- Floating Testimonial Card -->
+        <div class="hero-floating-card">
+          <div class="floating-stars">★★★★★</div>
+          <p class="floating-text">"The finest hand-embellished zardozi I have ever worn!"</p>
+          <p class="floating-sub">Fatima A. • Verified Royal Bride</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==========================================================================
+       Luxury Marquee Ticker
+       ========================================================================== -->
+  <div class="luxury-ticker" aria-hidden="true">
+    <div class="ticker-track">
+      <span class="ticker-item">Handcrafted Zardozi & Dabka <span class="ticker-bullet">◆</span></span>
+      <span class="ticker-item">Pure Mulberry Silks & Tulle <span class="ticker-bullet">◆</span></span>
+      <span class="ticker-item">Bespoke Made-to-Measure Fittings <span class="ticker-bullet">◆</span></span>
+      <span class="ticker-item">Express Worldwide Doorstep Delivery <span class="ticker-bullet">◆</span></span>
+      <span class="ticker-item">Direct WhatsApp VIP Stylist Support <span class="ticker-bullet">◆</span></span>
+      <span class="ticker-item">Curated Festive Prêt-à-Porter <span class="ticker-bullet">◆</span></span>
+      <!-- Duplicate for seamless infinite loop -->
+      <span class="ticker-item">Handcrafted Zardozi & Dabka <span class="ticker-bullet">◆</span></span>
+      <span class="ticker-item">Pure Mulberry Silks & Tulle <span class="ticker-bullet">◆</span></span>
+      <span class="ticker-item">Bespoke Made-to-Measure Fittings <span class="ticker-bullet">◆</span></span>
+      <span class="ticker-item">Express Worldwide Doorstep Delivery <span class="ticker-bullet">◆</span></span>
+      <span class="ticker-item">Direct WhatsApp VIP Stylist Support <span class="ticker-bullet">◆</span></span>
+      <span class="ticker-item">Curated Festive Prêt-à-Porter <span class="ticker-bullet">◆</span></span>
+    </div>
+  </div>
+
+  <!-- ==========================================================================
+       Brand Pillars / USPs
+       ========================================================================== -->
+  <section class="pillars-section">
+    <div class="container pillars-grid">
+      <div class="pillar-card">
+        <div class="pillar-icon"><i class="fa-solid fa-scissors"></i></div>
+        <div class="pillar-info">
+          <h4>Bespoke Sizing</h4>
+          <p>Custom made-to-measure patterns engineered for an impeccable flattering fit.</p>
+        </div>
+      </div>
+      <div class="pillar-card">
+        <div class="pillar-icon"><i class="fa-solid fa-gem"></i></div>
+        <div class="pillar-info">
+          <h4>Master Artisans</h4>
+          <p>Over 180+ hours of hand-guided zardozi, tilla, and pearl craftsmanship per piece.</p>
+        </div>
+      </div>
+      <div class="pillar-card">
+        <div class="pillar-icon"><i class="fa-solid fa-plane-departure"></i></div>
+        <div class="pillar-info">
+          <h4>Worldwide Express</h4>
+          <p>Insured expedited international delivery directly to your doorstep in 35+ countries.</p>
+        </div>
+      </div>
+      <div class="pillar-card">
+        <div class="pillar-icon"><i class="fa-brands fa-whatsapp"></i></div>
+        <div class="pillar-info">
+          <h4>WhatsApp Concierge</h4>
+          <p>Instant personal styling, fabric video calls, and order assistance 7 days a week.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==========================================================================
+       Curated Trend Showcase / Categories Grid
+       ========================================================================== -->
+  <section class="curated-section" id="curated">
+    <div class="container">
+      <div class="section-header">
+        <span class="subtitle">Curated Trends</span>
+        <h2>Explore By Signature Edits</h2>
+        <p>From imperial wedding ceremonies to intimate dinner soirees, discover our signature silhouettes.</p>
+      </div>
+
+      <div class="curated-grid">
+        <!-- Category Card 1 -->
+        <div class="category-card">
+          <img src="https://images.unsplash.com/photo-1610030469983-98e550d6193c?q=80&w=800&auto=format&fit=crop" alt="Bridal Couture" />
+          <div class="category-overlay">
+            <span class="category-pill">Royal Heirlooms</span>
+            <h3>Bridal Couture</h3>
+            <a href="#collection" class="category-link">View Edit <i class="fa-solid fa-arrow-right"></i></a>
+          </div>
+        </div>
+
+        <!-- Category Card 2 -->
+        <div class="category-card">
+          <img src="https://images.unsplash.com/photo-1566737236500-c8ac43014a67?q=80&w=800&auto=format&fit=crop" alt="Festive Luxe" />
+          <div class="category-overlay">
+            <span class="category-pill">Occasion Glamour</span>
+            <h3>Festive Luxe & Velvets</h3>
+            <a href="#collection" class="category-link">View Edit <i class="fa-solid fa-arrow-right"></i></a>
+          </div>
+        </div>
+
+        <!-- Category Card 3 -->
+        <div class="category-card">
+          <img src="https://images.unsplash.com/photo-1515372039744-b8f02a3ae446?q=80&w=800&auto=format&fit=crop" alt="Modern Fusion & Prêt" />
+          <div class="category-overlay">
+            <span class="category-pill">Effortless Grace</span>
+            <h3>Prêt & Silk Kaftans</h3>
+            <a href="#collection" class="category-link">View Edit <i class="fa-solid fa-arrow-right"></i></a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==========================================================================
+       Filterable Products Showcase
+       ========================================================================== -->
+  <section class="collection-section" id="collection">
+    <div class="container">
+      <div class="section-header">
+        <span class="subtitle">The Atelier Catalog</span>
+        <h2>New Season Masterpieces</h2>
+        <p>Explore our latest creations, crafted with devotion and ready for your most cherished celebrations.</p>
+      </div>
+
+      <!-- Filter Tabs Container -->
+      <div class="filter-tabs" id="filter-tabs"></div>
+
+      <!-- Product Cards Grid -->
+      <div class="products-grid" id="products-grid"></div>
+    </div>
+  </section>
+
+  <!-- ==========================================================================
+       Craftsmanship & Lookbook Section
+       ========================================================================== -->
+  <section class="craft-section" id="craft">
+    <div class="container craft-grid">
+      <div class="craft-gallery">
+        <div class="craft-img">
+          <img src="https://images.unsplash.com/photo-1509631179647-0177331693ae?q=80&w=800&auto=format&fit=crop" alt="Fine Hand Embroidery" />
+        </div>
+        <div class="craft-img">
+          <img src="https://images.unsplash.com/photo-1572804013309-59a88b7e92f1?q=80&w=800&auto=format&fit=crop" alt="Artisanal Silk Drapes" />
+        </div>
+      </div>
+
+      <div class="craft-content">
+        <span class="subtitle">Our Heritage & Atelier</span>
+        <h2>Every Stitch Tells a Tale of Grace</h2>
+        <p>
+          At Zulfa Boutiq, we believe true luxury cannot be rushed. Each garment is born from months of meticulous sketches, textile sourcing from handloom weavers, and painstaking hand embroidery by master artisans who have inherited their skills across generations.
+        </p>
+
+        <div class="craft-features">
+          <div class="craft-feature-item">
+            <i class="fa-solid fa-fingerprint"></i>
+            <div>
+              <strong>Original Artistic Patterns</strong>
+              <span>Unique bespoke motifs inspired by Mughal floral geometry and contemporary European couture draping.</span>
+            </div>
+          </div>
+          <div class="craft-feature-item">
+            <i class="fa-solid fa-leaf"></i>
+            <div>
+              <strong>Pure & Sustainable Fabrics</strong>
+              <span>100% natural Chanderi silks, pure organza tissues, micro-velvets, and breathable mulberries.</span>
+            </div>
+          </div>
+          <div class="craft-feature-item">
+            <i class="fa-solid fa-sparkles"></i>
+            <div>
+              <strong>Authentic Embellishments</strong>
+              <span>Genuine Swarovski crystals, Japanese seed pearls, real metallic tilla, and intricate French knots.</span>
+            </div>
+          </div>
+        </div>
+
+        <a href="#consultation" class="btn btn-gold">
+          <i class="fa-solid fa-compass-drafting"></i> Request Custom Atelier Piece
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==========================================================================
+       Bespoke Appointment / Consultation Booking Section
+       ========================================================================== -->
+  <section class="booking-section" id="consultation">
+    <div class="container">
+      <div class="booking-box">
+        <div class="booking-info">
+          <span class="subtitle" style="color: var(--c-gold);">VIP Experience</span>
+          <h2>Book a Private Styling Session</h2>
+          <p>
+            Whether you are preparing for your big wedding day or seeking a statement outfit for an upcoming festive celebration, our lead stylists provide dedicated 1-on-1 consultations.
+          </p>
+
+          <div class="booking-perks">
+            <div class="booking-perk-item">
+              <i class="fa-solid fa-circle-check"></i>
+              <span>Virtual Video Consultation with fabric and swatch close-ups</span>
+            </div>
+            <div class="booking-perk-item">
+              <i class="fa-solid fa-circle-check"></i>
+              <span>Personalized silhouette, color palette, and neckline recommendations</span>
+            </div>
+            <div class="booking-perk-item">
+              <i class="fa-solid fa-circle-check"></i>
+              <span>Complimentary bespoke measurement guide and doorstep trials</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Consultation Form -->
+        <form class="booking-form" id="consultation-form">
+          <div class="form-row">
+            <div class="form-group">
+              <label for="book-name">Full Name *</label>
+              <input type="text" id="book-name" class="form-input" placeholder="e.g. Fatima Zahra" required />
+            </div>
+            <div class="form-group">
+              <label for="book-phone">WhatsApp / Phone *</label>
+              <input type="tel" id="book-phone" class="form-input" placeholder="+1 (555) 000-0000" required />
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="book-service">Consultation Type *</label>
+              <select id="book-service" class="form-select" required>
+                <option value="Bridal Couture Fitting">Royal Bridal Couture Fitting</option>
+                <option value="Festive & Occasion Wear">Festive & Occasion Wear</option>
+                <option value="Virtual Global Styling Call">Virtual Global Styling Video Call</option>
+                <option value="Custom Bespoke Trousseau">Custom Bespoke Trousseau</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="book-date">Preferred Date *</label>
+              <input type="date" id="book-date" class="form-input" required />
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="book-notes">Event Details or Custom Requests</label>
+            <textarea id="book-notes" class="form-textarea" placeholder="Tell us about your event date, favorite colors, or dream design details..."></textarea>
+          </div>
+
+          <button type="submit" class="btn btn-gold" style="width: 100%;">
+            <i class="fa-solid fa-calendar-check"></i> Confirm Consultation Request
+          </button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==========================================================================
+       Customer Reviews & Real Brides
+       ========================================================================== -->
+  <section class="testimonials-section" id="reviews">
+    <div class="container">
+      <div class="section-header">
+        <span class="subtitle">Kind Words</span>
+        <h2>Loved by Discerning Women Worldwide</h2>
+        <p>Hear from real brides and fashion connoisseurs who celebrated their happiest moments in Zulfa Boutiq.</p>
+      </div>
+
+      <div class="testimonials-grid">
+        <!-- Review 1 -->
+        <div class="testimonial-card">
+          <div class="testimonial-stars">★★★★★</div>
+          <p class="testimonial-quote">
+            "Zulfa Boutiq crafted my dream bridal lehenga for my destination wedding. The custom fitting was flawless, and the zardozi detail left every guest breathless!"
+          </p>
+          <div class="testimonial-author">
+            <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=300&auto=format&fit=crop" alt="Fatima Al-Mansoor" class="testimonial-avatar" />
+            <div class="testimonial-meta">
+              <h5>Fatima Al-Mansoor</h5>
+              <span>Dubai, UAE</span>
+              <p class="testimonial-outfit">Nur-e-Jahan Bridal Lehenga</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Review 2 -->
+        <div class="testimonial-card">
+          <div class="testimonial-stars">★★★★★</div>
+          <p class="testimonial-quote">
+            "The fabric quality and modern silhouettes rival top international fashion weeks. The WhatsApp ordering process was smooth, professional, and delivered right on time."
+          </p>
+          <div class="testimonial-author">
+            <img src="https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?q=80&w=300&auto=format&fit=crop" alt="Ayesha Siddiqui" class="testimonial-avatar" />
+            <div class="testimonial-meta">
+              <h5>Ayesha Siddiqui</h5>
+              <span>London, UK</span>
+              <p class="testimonial-outfit">Aira Silk Kaftan & Zoya Velvet</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Review 3 -->
+        <div class="testimonial-card">
+          <div class="testimonial-stars">★★★★★</div>
+          <p class="testimonial-quote">
+            "Finding authentic bespoke modest luxury online can be challenging, but Zulfa Boutiq sets the golden benchmark. Beautiful packaging, exquisite handwork!"
+          </p>
+          <div class="testimonial-author">
+            <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=80&w=300&auto=format&fit=crop" alt="Dr. Samira Khan" class="testimonial-avatar" />
+            <div class="testimonial-meta">
+              <h5>Dr. Samira Khan</h5>
+              <span>New York, USA</span>
+              <p class="testimonial-outfit">Mehtab Ivory Sharara Suit</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==========================================================================
+       Instagram / Social Showcase
+       ========================================================================== -->
+  <section class="insta-section">
+    <div class="container">
+      <div class="section-header" style="margin-bottom: 32px;">
+        <span class="subtitle">Follow The Journey</span>
+        <h2>#ZulfaMuse on Instagram</h2>
+        <p>Tag @zulfaboutiq on Instagram to be featured in our global runway showcase.</p>
+      </div>
+
+      <div class="insta-grid">
+        <a href="https://instagram.com" target="_blank" rel="noopener" class="insta-item">
+          <img src="https://images.unsplash.com/photo-1583391733956-3750e0ff4e8b?q=80&w=600&auto=format&fit=crop" alt="Zulfa Muse 1" />
+          <div class="insta-hover">
+            <i class="fa-brands fa-instagram"></i>
+            <span>@zulfaboutiq</span>
+          </div>
+        </a>
+        <a href="https://instagram.com" target="_blank" rel="noopener" class="insta-item">
+          <img src="https://images.unsplash.com/photo-1566737236500-c8ac43014a67?q=80&w=600&auto=format&fit=crop" alt="Zulfa Muse 2" />
+          <div class="insta-hover">
+            <i class="fa-brands fa-instagram"></i>
+            <span>@zulfaboutiq</span>
+          </div>
+        </a>
+        <a href="https://instagram.com" target="_blank" rel="noopener" class="insta-item">
+          <img src="https://images.unsplash.com/photo-1515372039744-b8f02a3ae446?q=80&w=600&auto=format&fit=crop" alt="Zulfa Muse 3" />
+          <div class="insta-hover">
+            <i class="fa-brands fa-instagram"></i>
+            <span>@zulfaboutiq</span>
+          </div>
+        </a>
+        <a href="https://instagram.com" target="_blank" rel="noopener" class="insta-item">
+          <img src="https://images.unsplash.com/photo-1572804013309-59a88b7e92f1?q=80&w=600&auto=format&fit=crop" alt="Zulfa Muse 4" />
+          <div class="insta-hover">
+            <i class="fa-brands fa-instagram"></i>
+            <span>@zulfaboutiq</span>
+          </div>
+        </a>
+        <a href="https://instagram.com" target="_blank" rel="noopener" class="insta-item">
+          <img src="https://images.unsplash.com/photo-1550614000-4895a10e1bfd?q=80&w=600&auto=format&fit=crop" alt="Zulfa Muse 5" />
+          <div class="insta-hover">
+            <i class="fa-brands fa-instagram"></i>
+            <span>@zulfaboutiq</span>
+          </div>
+        </a>
+        <a href="https://instagram.com" target="_blank" rel="noopener" class="insta-item">
+          <img src="https://images.unsplash.com/photo-1490481651871-ab68de25d43d?q=80&w=600&auto=format&fit=crop" alt="Zulfa Muse 6" />
+          <div class="insta-hover">
+            <i class="fa-brands fa-instagram"></i>
+            <span>@zulfaboutiq</span>
+          </div>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==========================================================================
+       Footer
+       ========================================================================== -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-top">
+        <!-- Brand Info -->
+        <div class="footer-col">
+          <div class="brand-logo" style="margin-bottom: 16px;">
+            <span class="brand-name" style="color: var(--c-white);">ZULFA</span>
+            <span class="brand-sub">BOUTIQ</span>
+          </div>
+          <p>
+            An ode to classic grandeur and modern luxury. Crafting heirloom bridal couture, bespoke velvet suits, and contemporary festive silhouettes that inspire wonder.
+          </p>
+          <div class="footer-socials">
+            <a href="https://instagram.com" target="_blank" rel="noopener" class="social-btn" title="Instagram"><i class="fa-brands fa-instagram"></i></a>
+            <a href="https://facebook.com" target="_blank" rel="noopener" class="social-btn" title="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
+            <a href="https://pinterest.com" target="_blank" rel="noopener" class="social-btn" title="Pinterest"><i class="fa-brands fa-pinterest-p"></i></a>
+            <a href="https://wa.me/919876543210" target="_blank" rel="noopener" class="social-btn" title="WhatsApp"><i class="fa-brands fa-whatsapp"></i></a>
+          </div>
+        </div>
+
+        <!-- Quick Links -->
+        <div class="footer-col">
+          <h4>Boutique Links</h4>
+          <div class="footer-links">
+            <a href="#hero">The Atelier Home</a>
+            <a href="#collection">Bridal Collection</a>
+            <a href="#collection">Festive Prêt</a>
+            <a href="#collection">Silk Kaftans & Fusion</a>
+            <a href="#craft">Artisanal Craftsmanship</a>
+            <a href="#consultation">Private Fitting Appointment</a>
+          </div>
+        </div>
+
+        <!-- Client Services -->
+        <div class="footer-col">
+          <h4>Client Care</h4>
+          <div class="footer-links">
+            <a href="https://wa.me/919876543210" target="_blank" rel="noopener">WhatsApp Live Concierge</a>
+            <a href="#consultation">Custom Sizing Guide</a>
+            <a href="#">Worldwide Express Delivery</a>
+            <a href="#">Heirloom Garment Care</a>
+            <a href="#">Returns & Exchanges</a>
+            <a href="#">Privacy & Security</a>
+          </div>
+        </div>
+
+        <!-- Newsletter & VIP Club -->
+        <div class="footer-col">
+          <h4>Join The Zulfa VIP Club</h4>
+          <p>Subscribe to receive secret preview access to new drops and an instant 10% privilege discount.</p>
+          <form class="newsletter-form" id="newsletter-form">
+            <input type="email" id="newsletter-email" class="newsletter-input" placeholder="Enter your email" required />
+            <button type="submit" class="newsletter-btn">Subscribe</button>
+          </form>
+          <div style="margin-top: 20px; font-size: 0.8rem; color: #ADA59A;">
+            <p><i class="fa-solid fa-clock"></i> Mon – Sat: 10:30 AM – 8:00 PM</p>
+            <p><i class="fa-solid fa-envelope"></i> concierge@zulfaboutiq.com</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <p>&copy; 2026 Zulfa Boutiq. All rights reserved. Handcrafted with elegance.</p>
+        <div class="footer-payment-methods">
+          <i class="fa-brands fa-cc-visa" title="Visa"></i>
+          <i class="fa-brands fa-cc-mastercard" title="Mastercard"></i>
+          <i class="fa-brands fa-cc-amex" title="American Express"></i>
+          <i class="fa-brands fa-cc-apple-pay" title="Apple Pay"></i>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ==========================================================================
+       Interactive Cart Drawer
+       ========================================================================== -->
+  <div class="cart-drawer-backdrop" id="cart-backdrop"></div>
+  <aside class="cart-drawer" id="cart-drawer" aria-label="Shopping Bag">
+    <div class="cart-header">
+      <h3>Your Shopping Bag</h3>
+      <button class="cart-close-btn" id="cart-close-btn" aria-label="Close Bag">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+    </div>
+
+    <!-- Free Shipping Progress -->
+    <div class="shipping-bar-container">
+      <p class="shipping-bar-text" id="shipping-text">Add $200 more for complimentary express delivery.</p>
+      <div class="shipping-progress-bg">
+        <div class="shipping-progress-fill" id="shipping-progress-bar" style="width: 0%;"></div>
+      </div>
+    </div>
+
+    <!-- Cart Items -->
+    <div class="cart-body" id="cart-items-container"></div>
+
+    <!-- Cart Footer -->
+    <div class="cart-footer">
+      <div class="promo-row">
+        <input type="text" id="promo-input" class="promo-input" placeholder="Promo code (e.g. ZULFA10)" />
+        <button class="promo-btn" id="apply-promo-btn">Apply</button>
+      </div>
+
+      <div class="cart-subtotal-row">
+        <span>Subtotal</span>
+        <span id="cart-subtotal">$0</span>
+      </div>
+      <div class="cart-subtotal-row discount-row" id="discount-row" style="display: none;">
+        <span>Privilege Discount</span>
+        <span id="discount-amount">-$0</span>
+      </div>
+      <div class="cart-total-row">
+        <span>Estimated Total</span>
+        <span id="cart-total">$0</span>
+      </div>
+
+      <div class="cart-checkout-actions">
+        <!-- Direct WhatsApp Checkout -->
+        <button class="btn-wa-checkout" id="btn-wa-checkout">
+          <i class="fa-brands fa-whatsapp"></i> Order Directly via WhatsApp
+        </button>
+        <button class="btn btn-primary" id="btn-standard-checkout">
+          Proceed to Order
+        </button>
+      </div>
+    </div>
+  </aside>
+
+  <!-- ==========================================================================
+       Product Quick View Modal
+       ========================================================================== -->
+  <div class="modal-backdrop" id="modal-backdrop">
+    <div class="quick-view-modal" id="quick-view-modal">
+      <button class="modal-close-btn" id="modal-close-btn" aria-label="Close Modal">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+      <div id="quick-view-content"></div>
+    </div>
+  </div>
+
+  <!-- ==========================================================================
+       Live Search Overlay Modal
+       ========================================================================== -->
+  <div class="search-modal" id="search-modal">
+    <div class="search-container">
+      <div class="search-input-wrap">
+        <input type="text" id="search-input" placeholder="Search bridal, velvet, silks, lehengas..." autofocus />
+        <button class="search-close-btn" id="search-close-btn" aria-label="Close search">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+      <div class="search-results" id="search-results"></div>
+    </div>
+  </div>
+
+  <!-- ==========================================================================
+       Mobile Navigation Drawer
+       ========================================================================== -->
+  <div class="mobile-nav-drawer" id="mobile-nav-drawer">
+    <div class="mobile-nav-header">
+      <div class="brand-logo">
+        <span class="brand-name" style="color: var(--c-white);">ZULFA</span>
+        <span class="brand-sub">BOUTIQ</span>
+      </div>
+      <button class="cart-close-btn" id="mobile-nav-close" style="color: var(--c-white);">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+    </div>
+
+    <nav class="mobile-nav-links">
+      <a href="#hero" class="mobile-nav-link">Home</a>
+      <a href="#curated" class="mobile-nav-link">Signature Edits</a>
+      <a href="#collection" class="mobile-nav-link">Full Collection</a>
+      <a href="#craft" class="mobile-nav-link">Craftsmanship</a>
+      <a href="#consultation" class="mobile-nav-link">Bespoke Fitting</a>
+      <a href="#reviews" class="mobile-nav-link">Customer Reviews</a>
+    </nav>
+
+    <div style="margin-top: auto; padding-top: 20px; border-top: 1px solid rgba(255,255,255,0.1);">
+      <a href="https://wa.me/919876543210" target="_blank" rel="noopener" class="whatsapp-direct-btn" style="width: 100%; justify-content: center; margin-bottom: 12px;">
+        <i class="fa-brands fa-whatsapp"></i> Chat with Stylist
+      </a>
+      <p style="font-size: 0.78rem; color: #ADA59A; text-align: center;">
+        Concierge Available 24/7 Worldwide
+      </p>
+    </div>
+  </div>
+
+  <!-- ==========================================================================
+       Toast Notification Container
+       ========================================================================== -->
+  <div class="toast-notification" id="toast-notification">
+    <span id="toast-message">Notification message</span>
+  </div>
+
+  <!-- JavaScript Scripts -->
+  <script src="js/data.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
