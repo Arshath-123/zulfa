@@ -1,5 +1,5 @@
 // ==========================================================================
-// ZULFA BOUTIQ - Main Interactive Application Logic
+// ZULFA BOUTIQ - Pakistani Suits & Luxury Hijab Interactive Logic
 // ==========================================================================
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -12,13 +12,16 @@ document.addEventListener("DOMContentLoaded", () => {
     appliedPromoCode: "",
     activeQuickViewProduct: null,
     selectedSize: null,
-    selectedColor: null
+    selectedColor: null,
+    selectedStitching: "Unstitched (3-Piece)",
+    pairedHijabSelected: false
   };
 
   // DOM Elements
   const header = document.querySelector(".site-header");
   const productsGrid = document.getElementById("products-grid");
   const filterTabsContainer = document.getElementById("filter-tabs");
+  const hijabGuideGrid = document.getElementById("hijab-guide-grid");
   const cartBadge = document.getElementById("cart-badge");
   const wishlistBadge = document.getElementById("wishlist-badge");
   const cartDrawer = document.getElementById("cart-drawer");
@@ -59,7 +62,7 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   // ==========================================================================
-  // Toast Helper
+  // Toast Notification
   // ==========================================================================
   let toastTimeout;
   function showToast(message, icon = "fa-check-circle") {
@@ -94,14 +97,14 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // ==========================================================================
-  // Render Products
+  // Render Products with "Pair with Matching Hijab" Feature
   // ==========================================================================
   function renderProducts() {
     if (!productsGrid) return;
     
     let filtered = PRODUCTS;
-    if (state.activeCategory === "new-in") {
-      filtered = PRODUCTS.filter(p => p.isNew);
+    if (state.activeCategory === "pakistani-suits") {
+      filtered = PRODUCTS.filter(p => p.category !== "hijabs");
     } else if (state.activeCategory !== "all") {
       filtered = PRODUCTS.filter(p => p.category === state.activeCategory);
     }
@@ -117,7 +120,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     productsGrid.innerHTML = filtered.map(product => {
       const isWishlisted = state.wishlist.includes(product.id);
-      const discountPercentage = Math.round(((product.originalPrice - product.price) / product.originalPrice) * 100);
+      const hasMatchingHijab = Boolean(product.matchingHijab);
 
       return `
         <article class="product-card" data-id="${product.id}">
@@ -139,15 +142,28 @@ document.addEventListener("DOMContentLoaded", () => {
               ${renderStars(product.rating)}
               <span>(${product.reviewCount})</span>
             </div>
+
+            ${hasMatchingHijab ? `
+              <div class="pair-hijab-box" data-id="${product.id}" title="Include color-matched modest hijab">
+                <input type="checkbox" class="pair-hijab-checkbox" id="hijab-chk-${product.id}" data-id="${product.id}" />
+                <label for="hijab-chk-${product.id}" class="pair-hijab-text">
+                  Pair with Matching Hijab
+                </label>
+                <span class="pair-hijab-price">+${BOUTIQUE_CONFIG.currency}${product.matchingHijab.price}</span>
+              </div>
+            ` : ''}
+
             <div class="product-price-row">
-              <span class="product-price">${BOUTIQUE_CONFIG.currency}${product.price}</span>
+              <span class="product-price" id="price-display-${product.id}">
+                ${BOUTIQUE_CONFIG.currency}${product.price}
+              </span>
               ${product.originalPrice ? `<span class="product-original-price">${BOUTIQUE_CONFIG.currency}${product.originalPrice}</span>` : ''}
             </div>
             <div class="product-card-actions">
               <button class="btn-add-bag" data-id="${product.id}">
                 <i class="fa-solid fa-bag-shopping"></i> Add to Bag
               </button>
-              <button class="btn-wa-quick" data-id="${product.id}" title="Inquire on WhatsApp">
+              <button class="btn-wa-quick" data-id="${product.id}" title="Order on WhatsApp">
                 <i class="fa-brands fa-whatsapp"></i>
               </button>
             </div>
@@ -180,8 +196,7 @@ document.addEventListener("DOMContentLoaded", () => {
     document.querySelectorAll(".quick-view-trigger").forEach(btn => {
       btn.addEventListener("click", (e) => {
         e.stopPropagation();
-        const prodId = btn.dataset.id;
-        openQuickView(prodId);
+        openQuickView(btn.dataset.id);
       });
     });
 
@@ -189,8 +204,32 @@ document.addEventListener("DOMContentLoaded", () => {
     document.querySelectorAll(".product-wishlist-btn").forEach(btn => {
       btn.addEventListener("click", (e) => {
         e.stopPropagation();
-        const prodId = btn.dataset.id;
-        toggleWishlist(prodId, btn);
+        toggleWishlist(btn.dataset.id, btn);
+      });
+    });
+
+    // Pair Hijab Checkbox Toggle on Card
+    document.querySelectorAll(".pair-hijab-checkbox").forEach(chk => {
+      chk.addEventListener("change", (e) => {
+        const prodId = chk.dataset.id;
+        const product = PRODUCTS.find(p => p.id === prodId);
+        const priceEl = document.getElementById(`price-display-${prodId}`);
+        const box = chk.closest(".pair-hijab-box");
+
+        if (box) {
+          if (chk.checked) {
+            box.classList.add("active");
+            if (priceEl && product && product.matchingHijab) {
+              const comboPrice = product.price + product.matchingHijab.price;
+              priceEl.innerHTML = `${BOUTIQUE_CONFIG.currency}${comboPrice} <span style="font-size:0.75rem; color:var(--c-emerald); font-weight:600;">(Suit + Hijab)</span>`;
+            }
+          } else {
+            box.classList.remove("active");
+            if (priceEl && product) {
+              priceEl.innerHTML = `${BOUTIQUE_CONFIG.currency}${product.price}`;
+            }
+          }
+        }
       });
     });
 
@@ -200,10 +239,19 @@ document.addEventListener("DOMContentLoaded", () => {
         e.stopPropagation();
         const prodId = btn.dataset.id;
         const product = PRODUCTS.find(p => p.id === prodId);
-        if (product) {
-          addToCart(product, product.sizes[0], product.colors[0]?.name || "Default");
-          showToast(`Added <strong>${product.name}</strong> to your bag!`);
+        if (!product) return;
+
+        const hijabChk = document.getElementById(`hijab-chk-${prodId}`);
+        const includeHijab = hijabChk && hijabChk.checked;
+
+        const defaultStitching = product.stitchingOptions ? product.stitchingOptions[0] : "Standard";
+        addToCart(product, product.sizes[0], product.colors[0]?.name || "Default", defaultStitching, 1);
+
+        if (includeHijab && product.matchingHijab) {
+          addMatchingHijabToCart(product.matchingHijab, product.name);
         }
+
+        showToast(`Added <strong>${product.name}</strong>${includeHijab ? ' + Matching Hijab' : ''} to your bag!`);
       });
     });
 
@@ -214,10 +262,51 @@ document.addEventListener("DOMContentLoaded", () => {
         const prodId = btn.dataset.id;
         const product = PRODUCTS.find(p => p.id === prodId);
         if (product) {
-          sendWhatsAppInquiry(product);
+          const hijabChk = document.getElementById(`hijab-chk-${prodId}`);
+          const includeHijab = hijabChk && hijabChk.checked;
+          sendWhatsAppInquiry(product, product.sizes[0], product.colors[0]?.name, includeHijab);
         }
       });
     });
+  }
+
+  // ==========================================================================
+  // Render Hijab Fabric Guide
+  // ==========================================================================
+  function renderHijabGuide() {
+    if (!hijabGuideGrid || !HIJAB_FABRIC_GUIDE) return;
+
+    hijabGuideGrid.innerHTML = HIJAB_FABRIC_GUIDE.map(item => `
+      <div class="fabric-card">
+        <div class="fabric-icon"><i class="fa-solid fa-gem"></i></div>
+        <h3>${item.fabricName}</h3>
+        <p class="fabric-tagline">${item.tagline}</p>
+
+        <div class="fabric-metrics">
+          <div class="metric-row">
+            <span>Opacity Level:</span>
+            <span>${item.opacity}</span>
+          </div>
+          <div class="metric-row">
+            <span>Breathability:</span>
+            <span>${item.breathability}</span>
+          </div>
+          <div class="metric-row">
+            <span>Drape Style:</span>
+            <span>${item.drape}</span>
+          </div>
+          <div class="metric-row">
+            <span>Pin Preference:</span>
+            <span>${item.pinsNeeded}</span>
+          </div>
+        </div>
+
+        <p class="fabric-desc">${item.desc}</p>
+        <div style="margin-top: 16px; font-size: 0.78rem; color: var(--c-emerald); font-weight: 600;">
+          <i class="fa-solid fa-check"></i> Best Paired With: ${item.bestFor}
+        </div>
+      </div>
+    `).join("");
   }
 
   // ==========================================================================
@@ -252,9 +341,9 @@ document.addEventListener("DOMContentLoaded", () => {
   // ==========================================================================
   // Cart Management
   // ==========================================================================
-  function addToCart(product, size, color, quantity = 1) {
+  function addToCart(product, size, color, stitching = "Unstitched (3-Piece)", quantity = 1) {
     const existingIndex = state.cart.findIndex(
-      item => item.id === product.id && item.size === size && item.color === color
+      item => item.id === product.id && item.size === size && item.color === color && item.stitching === stitching
     );
 
     if (existingIndex > -1) {
@@ -267,14 +356,39 @@ document.addEventListener("DOMContentLoaded", () => {
         image: product.images[0],
         size: size,
         color: color,
+        stitching: stitching,
         fabric: product.fabric,
-        quantity: quantity
+        quantity: quantity,
+        isHijab: product.category === "hijabs"
       });
     }
 
     saveCart();
     renderCart();
     openCartDrawer();
+  }
+
+  function addMatchingHijabToCart(hijabObj, parentSuitName) {
+    const existingIndex = state.cart.findIndex(item => item.id === hijabObj.id);
+    if (existingIndex > -1) {
+      state.cart[existingIndex].quantity += 1;
+    } else {
+      state.cart.push({
+        id: hijabObj.id,
+        name: hijabObj.name,
+        price: hijabObj.price,
+        image: hijabObj.image,
+        size: "Standard Hijab (190 x 75 cm)",
+        color: "Matching Palette",
+        stitching: "Finished Edges",
+        fabric: hijabObj.fabric,
+        quantity: 1,
+        isHijab: true,
+        pairedWith: parentSuitName
+      });
+    }
+    saveCart();
+    renderCart();
   }
 
   function updateCartItemQuantity(index, delta) {
@@ -318,8 +432,8 @@ document.addEventListener("DOMContentLoaded", () => {
         <div class="cart-empty-state">
           <i class="fa-solid fa-bag-shopping"></i>
           <h4>Your Shopping Bag is Empty</h4>
-          <p>Discover our bespoke couture and festive pret collections.</p>
-          <button class="btn btn-primary" id="btn-empty-shop">Explore Collection</button>
+          <p>Discover our Pakistani 3-piece designer suits and luxury silk hijabs.</p>
+          <button class="btn btn-primary" id="btn-empty-shop">Explore Suits &amp; Hijabs</button>
         </div>
       `;
       const emptyShopBtn = document.getElementById("btn-empty-shop");
@@ -346,7 +460,10 @@ document.addEventListener("DOMContentLoaded", () => {
         </div>
         <div class="cart-item-details">
           <h4 class="cart-item-title">${item.name}</h4>
-          <div class="cart-item-meta">Size: <strong>${item.size}</strong> | Color: <strong>${item.color}</strong></div>
+          <div class="cart-item-meta">
+            ${item.isHijab ? `<span style="color:var(--c-emerald); font-weight:700;">[MODEST HIJAB]</span>` : `<span>Style: <strong>${item.stitching}</strong> | Size: <strong>${item.size}</strong></span>`}
+            ${item.pairedWith ? `<br><small style="color:var(--c-gold);">Matched with ${item.pairedWith}</small>` : ''}
+          </div>
           <div class="cart-item-price">${BOUTIQUE_CONFIG.currency}${item.price * item.quantity}</div>
           <div class="cart-item-controls">
             <div class="quantity-control">
@@ -426,7 +543,7 @@ document.addEventListener("DOMContentLoaded", () => {
       } else if (code === "") {
         showToast("Please enter a promo code.", "fa-circle-exclamation");
       } else {
-        showToast(`Invalid code. Try "ZULFA10" for 10% off!`, "fa-circle-exclamation");
+        showToast(`Invalid code. Try "MODEST10" for 10% off!`, "fa-circle-exclamation");
       }
     });
   }
@@ -438,7 +555,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (state.cart.length === 0) return null;
 
     let itemsText = state.cart.map((item, idx) => {
-      return `${idx + 1}. *${item.name}*\n   • Size: ${item.size}\n   • Color: ${item.color}\n   • Qty: ${item.quantity}\n   • Price: ${BOUTIQUE_CONFIG.currency}${item.price * item.quantity}`;
+      return `${idx + 1}. *${item.name}*\n   • Option: ${item.stitching}\n   • Size: ${item.size}\n   • Color: ${item.color}\n   • Qty: ${item.quantity}\n   • Price: ${BOUTIQUE_CONFIG.currency}${item.price * item.quantity}`;
     }).join("\n\n");
 
     const subtotal = state.cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
@@ -453,7 +570,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     summaryText += `\n• Total: *${BOUTIQUE_CONFIG.currency}${finalTotal.toFixed(0)}*`;
-    summaryText += `\n\nPlease confirm availability and payment/delivery instructions. Thank you!`;
+    summaryText += `\n\nPlease confirm availability for stitching/dispatch. JazakAllah Khair!`;
 
     const fullMessage = `${BOUTIQUE_CONFIG.whatsappDefaultMsg}\n\n${itemsText}${summaryText}`;
     const cleanNumber = BOUTIQUE_CONFIG.whatsappNumber.replace(/[^0-9]/g, "");
@@ -463,7 +580,7 @@ document.addEventListener("DOMContentLoaded", () => {
   if (waCheckoutBtn) {
     waCheckoutBtn.addEventListener("click", () => {
       if (state.cart.length === 0) {
-        showToast("Your bag is empty! Add an outfit first.", "fa-circle-exclamation");
+        showToast("Your bag is empty! Add a Pakistani suit or hijab first.", "fa-circle-exclamation");
         return;
       }
       const url = generateWhatsAppOrderUrl();
@@ -473,10 +590,16 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  function sendWhatsAppInquiry(product, selectedSize = null, selectedColor = null) {
+  function sendWhatsAppInquiry(product, selectedSize = null, selectedColor = null, includeHijab = false) {
     const size = selectedSize || product.sizes[0];
     const color = selectedColor || product.colors[0]?.name || "Default";
-    const msg = `Hello Zulfa Boutiq! I am inquiring about:\n\n*${product.name}*\n• SKU: ${product.id}\n• Price: ${BOUTIQUE_CONFIG.currency}${product.price}\n• Selected Size: ${size}\n• Selected Color: ${color}\n• Fabric: ${product.fabric}\n\nIs this available for order or bespoke fitting?`;
+    let msg = `Salam Zulfa Boutiq! I am inquiring about:\n\n*${product.name}*\n• SKU: ${product.id}\n• Price: ${BOUTIQUE_CONFIG.currency}${product.price}\n• Selected Size: ${size}\n• Selected Color: ${color}\n• Fabric: ${product.fabric}`;
+
+    if (includeHijab && product.matchingHijab) {
+      msg += `\n• *Including Matched Hijab*: ${product.matchingHijab.name} (+${BOUTIQUE_CONFIG.currency}${product.matchingHijab.price})`;
+    }
+
+    msg += `\n\nIs this available in unstitched or custom stitched?`;
     const cleanNumber = BOUTIQUE_CONFIG.whatsappNumber.replace(/[^0-9]/g, "");
     const url = `https://wa.me/${cleanNumber}?text=${encodeURIComponent(msg)}`;
     window.open(url, "_blank");
@@ -492,6 +615,8 @@ document.addEventListener("DOMContentLoaded", () => {
     state.activeQuickViewProduct = product;
     state.selectedSize = product.sizes[0];
     state.selectedColor = product.colors[0]?.name || "";
+    state.selectedStitching = product.stitchingOptions ? product.stitchingOptions[0] : "Standard";
+    state.pairedHijabSelected = false;
 
     const modalContent = document.getElementById("quick-view-content");
     if (!modalContent) return;
@@ -515,16 +640,52 @@ document.addEventListener("DOMContentLoaded", () => {
           <h3>${product.name}</h3>
           <div class="product-rating" style="margin-bottom: 12px;">
             ${renderStars(product.rating)}
-            <span>(${product.reviewCount} customer reviews)</span>
+            <span>(${product.reviewCount} verified reviews)</span>
           </div>
           <div class="modal-price-row">
-            <span class="modal-price">${BOUTIQUE_CONFIG.currency}${product.price}</span>
+            <span class="modal-price" id="modal-price-val">${BOUTIQUE_CONFIG.currency}${product.price}</span>
             ${product.originalPrice ? `<span class="product-original-price">${BOUTIQUE_CONFIG.currency}${product.originalPrice}</span>` : ''}
           </div>
           <p class="modal-desc">${product.description}</p>
-          <p style="font-size: 0.85rem; color: var(--c-primary); margin-bottom: 16px;">
-            <strong>Fabric & Embellishment:</strong> ${product.fabric}
-          </p>
+
+          ${product.suitComponents ? `
+            <div class="modal-suit-specs">
+              <div class="spec-line"><span class="spec-badge">Kameez</span> ${product.suitComponents.shirt}</div>
+              <div class="spec-line"><span class="spec-badge">Dupatta</span> ${product.suitComponents.dupatta}</div>
+              <div class="spec-line"><span class="spec-badge">Trouser</span> ${product.suitComponents.trouser || product.suitComponents.gharara}</div>
+              ${product.suitComponents.lining ? `<div class="spec-line"><span class="spec-badge">Inner</span> ${product.suitComponents.lining}</div>` : ''}
+            </div>
+          ` : ''}
+
+          <!-- Matching Hijab Pair Box inside Modal -->
+          ${product.matchingHijab ? `
+            <div class="modal-hijab-box">
+              <div class="modal-hijab-thumb">
+                <img src="${product.matchingHijab.image}" alt="${product.matchingHijab.name}" />
+              </div>
+              <div class="modal-hijab-info">
+                <div class="modal-hijab-title">Pair with Matching Hijab</div>
+                <div class="modal-hijab-sub">${product.matchingHijab.name} (${product.matchingHijab.fabric})</div>
+              </div>
+              <button class="modal-hijab-btn" id="modal-pair-hijab-btn">
+                <i class="fa-solid fa-plus"></i> Add (+${BOUTIQUE_CONFIG.currency}${product.matchingHijab.price})
+              </button>
+            </div>
+          ` : ''}
+
+          <!-- Stitching / Cut Option -->
+          ${product.stitchingOptions && product.stitchingOptions.length > 1 ? `
+            <div class="option-group">
+              <div class="option-label">
+                <span>Stitching Option: <strong id="selected-stitching-label">${product.stitchingOptions[0]}</strong></span>
+              </div>
+              <div class="size-chips">
+                ${product.stitchingOptions.map((opt, i) => `
+                  <button class="size-chip ${i === 0 ? 'active' : ''} modal-stitch-chip" data-stitch="${opt}">${opt}</button>
+                `).join("")}
+              </div>
+            </div>
+          ` : ''}
 
           <!-- Color selection -->
           <div class="option-group">
@@ -546,11 +707,11 @@ document.addEventListener("DOMContentLoaded", () => {
           <div class="option-group">
             <div class="option-label">
               <span>Select Size: <strong id="selected-size-label">${product.sizes[0]}</strong></span>
-              <a href="#consultation" id="btn-custom-fit-link" style="font-size: 0.75rem; color: var(--c-gold); text-decoration: underline;">Need Custom Fitting?</a>
+              <a href="#consultation" id="btn-custom-fit-link" style="font-size: 0.75rem; color: var(--c-gold); text-decoration: underline;">Custom Measurements?</a>
             </div>
             <div class="size-chips">
               ${product.sizes.map((s, i) => `
-                <button class="size-chip ${i === 0 ? 'active' : ''}" data-size="${s}">${s}</button>
+                <button class="size-chip ${i === 0 ? 'active' : ''} modal-size-chip" data-size="${s}">${s}</button>
               `).join("")}
             </div>
           </div>
@@ -578,6 +739,39 @@ document.addEventListener("DOMContentLoaded", () => {
       });
     });
 
+    // Pair Hijab Button inside Modal
+    const modalPairHijabBtn = document.getElementById("modal-pair-hijab-btn");
+    const modalPriceVal = document.getElementById("modal-price-val");
+    if (modalPairHijabBtn && product.matchingHijab) {
+      modalPairHijabBtn.addEventListener("click", () => {
+        state.pairedHijabSelected = !state.pairedHijabSelected;
+        if (state.pairedHijabSelected) {
+          modalPairHijabBtn.classList.add("added");
+          modalPairHijabBtn.innerHTML = `<i class="fa-solid fa-check"></i> Hijab Added (+${BOUTIQUE_CONFIG.currency}${product.matchingHijab.price})`;
+          if (modalPriceVal) {
+            modalPriceVal.innerHTML = `${BOUTIQUE_CONFIG.currency}${product.price + product.matchingHijab.price} <span style="font-size:0.8rem; color:var(--c-emerald);">(with Hijab)</span>`;
+          }
+        } else {
+          modalPairHijabBtn.classList.remove("added");
+          modalPairHijabBtn.innerHTML = `<i class="fa-solid fa-plus"></i> Add (+${BOUTIQUE_CONFIG.currency}${product.matchingHijab.price})`;
+          if (modalPriceVal) {
+            modalPriceVal.innerHTML = `${BOUTIQUE_CONFIG.currency}${product.price}`;
+          }
+        }
+      });
+    }
+
+    // Stitching click events
+    modalContent.querySelectorAll(".modal-stitch-chip").forEach(chip => {
+      chip.addEventListener("click", () => {
+        modalContent.querySelectorAll(".modal-stitch-chip").forEach(s => s.classList.remove("active"));
+        chip.classList.add("active");
+        state.selectedStitching = chip.dataset.stitch;
+        const label = document.getElementById("selected-stitching-label");
+        if (label) label.textContent = state.selectedStitching;
+      });
+    });
+
     // Color click events
     modalContent.querySelectorAll(".color-swatch").forEach(swatch => {
       swatch.addEventListener("click", () => {
@@ -590,9 +784,9 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     // Size click events
-    modalContent.querySelectorAll(".size-chip").forEach(chip => {
+    modalContent.querySelectorAll(".modal-size-chip").forEach(chip => {
       chip.addEventListener("click", () => {
-        modalContent.querySelectorAll(".size-chip").forEach(s => s.classList.remove("active"));
+        modalContent.querySelectorAll(".modal-size-chip").forEach(s => s.classList.remove("active"));
         chip.classList.add("active");
         state.selectedSize = chip.dataset.size;
         const label = document.getElementById("selected-size-label");
@@ -604,9 +798,12 @@ document.addEventListener("DOMContentLoaded", () => {
     const modalAddBagBtn = document.getElementById("modal-add-bag");
     if (modalAddBagBtn) {
       modalAddBagBtn.addEventListener("click", () => {
-        addToCart(product, state.selectedSize, state.selectedColor);
+        addToCart(product, state.selectedSize, state.selectedColor, state.selectedStitching);
+        if (state.pairedHijabSelected && product.matchingHijab) {
+          addMatchingHijabToCart(product.matchingHijab, product.name);
+        }
         closeQuickView();
-        showToast(`Added <strong>${product.name}</strong> (${state.selectedSize}) to bag!`);
+        showToast(`Added <strong>${product.name}</strong>${state.pairedHijabSelected ? ' + Matching Hijab' : ''} to bag!`);
       });
     }
 
@@ -614,15 +811,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const modalWaOrderBtn = document.getElementById("modal-wa-order");
     if (modalWaOrderBtn) {
       modalWaOrderBtn.addEventListener("click", () => {
-        sendWhatsAppInquiry(product, state.selectedSize, state.selectedColor);
-      });
-    }
-
-    // Custom fit anchor
-    const customFitLink = document.getElementById("btn-custom-fit-link");
-    if (customFitLink) {
-      customFitLink.addEventListener("click", () => {
-        closeQuickView();
+        sendWhatsAppInquiry(product, state.selectedSize, state.selectedColor, state.pairedHijabSelected);
       });
     }
 
@@ -664,7 +853,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (!cleanQuery) {
       searchResults.innerHTML = `
         <div style="color: #ADA59A; text-align: center; padding: 20px;">
-          Type outfit name, category, or fabric (e.g., "Lehenga", "Velvet", "Bridal", "Silk")...
+          Type outfit name, category, or fabric (e.g., "Lawn", "Chiffon", "Hijab", "Velvet")...
         </div>
       `;
       return;
@@ -724,9 +913,9 @@ document.addEventListener("DOMContentLoaded", () => {
       const name = document.getElementById("book-name")?.value || "Valued Client";
       const phone = document.getElementById("book-phone")?.value || "";
       const date = document.getElementById("book-date")?.value || "Soon";
-      const service = document.getElementById("book-service")?.value || "Bespoke Fitting";
+      const service = document.getElementById("book-service")?.value || "Pakistani Suit Fitting";
 
-      showToast(`✨ Thank you, ${name}! Your consultation request for ${service} on ${date} has been confirmed. Our head stylist will contact you at ${phone}.`, "fa-calendar-check");
+      showToast(`✨ Shukran, ${name}! Your consultation request for ${service} on ${date} is confirmed. Our head stylist will contact you at ${phone}.`, "fa-calendar-check");
       consultationForm.reset();
     });
   }
@@ -740,7 +929,7 @@ document.addEventListener("DOMContentLoaded", () => {
       e.preventDefault();
       const emailInput = document.getElementById("newsletter-email");
       if (emailInput && emailInput.value) {
-        showToast(`Welcome to Zulfa VIP! Use code <strong>ZULFA10</strong> for 10% off your first order.`, "fa-gift");
+        showToast(`Welcome to Zulfa VIP! Use code <strong>MODEST10</strong> for 10% off your first order.`, "fa-gift");
         emailInput.value = "";
       }
     });
@@ -769,17 +958,13 @@ document.addEventListener("DOMContentLoaded", () => {
     link.addEventListener("click", closeMobileNav);
   });
 
-  // ==========================================================================
-  // Global Event Listeners & Triggers
-  // ==========================================================================
-  // Cart open triggers
+  // Global Triggers
   document.querySelectorAll(".trigger-cart").forEach(btn => {
     btn.addEventListener("click", openCartDrawer);
   });
   if (cartCloseBtn) cartCloseBtn.addEventListener("click", closeCartDrawer);
   if (cartBackdrop) cartBackdrop.addEventListener("click", closeCartDrawer);
 
-  // Search open triggers
   document.querySelectorAll(".trigger-search").forEach(btn => {
     btn.addEventListener("click", openSearch);
   });
@@ -790,7 +975,6 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // Quick View modal close
   if (modalCloseBtn) modalCloseBtn.addEventListener("click", closeQuickView);
   if (modalBackdrop) {
     modalBackdrop.addEventListener("click", (e) => {
@@ -798,7 +982,6 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // Standard checkout button
   const standardCheckoutBtn = document.getElementById("btn-standard-checkout");
   if (standardCheckoutBtn) {
     standardCheckoutBtn.addEventListener("click", () => {
@@ -806,7 +989,7 @@ document.addEventListener("DOMContentLoaded", () => {
         showToast("Your bag is empty! Add an outfit first.", "fa-circle-exclamation");
         return;
       }
-      showToast("Directing to WhatsApp checkout for verified bespoke orders...", "fa-bag-shopping");
+      showToast("Directing to WhatsApp checkout for verified Pakistani bespoke orders...", "fa-bag-shopping");
       setTimeout(() => {
         const url = generateWhatsAppOrderUrl();
         if (url) window.open(url, "_blank");
@@ -814,7 +997,6 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // Escape key closes modals & drawers
   document.addEventListener("keydown", (e) => {
     if (e.key === "Escape") {
       closeCartDrawer();
@@ -824,11 +1006,10 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  // ==========================================================================
-  // Initialize Application
-  // ==========================================================================
+  // Initialize
   renderFilterTabs();
   renderProducts();
+  renderHijabGuide();
   renderCart();
   updateWishlistBadge();
   updateCartBadge();
