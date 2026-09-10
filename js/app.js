@@ -1,5 +1,6 @@
 // ==========================================================================
-// ZULFA BOUTIQ - Pakistani Suits & Luxury Hijab Interactive Logic
+// ZULFA BOUTIQ - Interactive Logic with Indian Rupee (₹ INR) Formatting
+// Handles Pakistani Suits, Premium Abayas, Designer Kurtis, Maxis & Hijabs
 // ==========================================================================
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -13,9 +14,15 @@ document.addEventListener("DOMContentLoaded", () => {
     activeQuickViewProduct: null,
     selectedSize: null,
     selectedColor: null,
-    selectedStitching: "Unstitched (3-Piece)",
+    selectedStitching: "Standard",
     pairedHijabSelected: false
   };
+
+  // Helper: Format price in Indian Rupees (₹) with Indian numbering (e.g. ₹4,999)
+  function formatINR(amount) {
+    if (isNaN(amount)) return `${BOUTIQUE_CONFIG.currency}0`;
+    return `${BOUTIQUE_CONFIG.currency}${Math.round(amount).toLocaleString('en-IN')}`;
+  }
 
   // DOM Elements
   const header = document.querySelector(".site-header");
@@ -97,15 +104,13 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // ==========================================================================
-  // Render Products with "Pair with Matching Hijab" Feature
+  // Render Products
   // ==========================================================================
   function renderProducts() {
     if (!productsGrid) return;
     
     let filtered = PRODUCTS;
-    if (state.activeCategory === "pakistani-suits") {
-      filtered = PRODUCTS.filter(p => p.category !== "hijabs");
-    } else if (state.activeCategory !== "all") {
+    if (state.activeCategory !== "all") {
       filtered = PRODUCTS.filter(p => p.category === state.activeCategory);
     }
 
@@ -120,7 +125,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     productsGrid.innerHTML = filtered.map(product => {
       const isWishlisted = state.wishlist.includes(product.id);
-      const hasMatchingHijab = Boolean(product.matchingHijab);
+      const hasMatchingHijab = Boolean(product.matchingHijab && product.matchingHijab.price > 0);
 
       return `
         <article class="product-card" data-id="${product.id}">
@@ -149,15 +154,15 @@ document.addEventListener("DOMContentLoaded", () => {
                 <label for="hijab-chk-${product.id}" class="pair-hijab-text">
                   Pair with Matching Hijab
                 </label>
-                <span class="pair-hijab-price">+${BOUTIQUE_CONFIG.currency}${product.matchingHijab.price}</span>
+                <span class="pair-hijab-price">+${formatINR(product.matchingHijab.price)}</span>
               </div>
             ` : ''}
 
             <div class="product-price-row">
               <span class="product-price" id="price-display-${product.id}">
-                ${BOUTIQUE_CONFIG.currency}${product.price}
+                ${formatINR(product.price)}
               </span>
-              ${product.originalPrice ? `<span class="product-original-price">${BOUTIQUE_CONFIG.currency}${product.originalPrice}</span>` : ''}
+              ${product.originalPrice ? `<span class="product-original-price">${formatINR(product.originalPrice)}</span>` : ''}
             </div>
             <div class="product-card-actions">
               <button class="btn-add-bag" data-id="${product.id}">
@@ -221,12 +226,12 @@ document.addEventListener("DOMContentLoaded", () => {
             box.classList.add("active");
             if (priceEl && product && product.matchingHijab) {
               const comboPrice = product.price + product.matchingHijab.price;
-              priceEl.innerHTML = `${BOUTIQUE_CONFIG.currency}${comboPrice} <span style="font-size:0.75rem; color:var(--c-emerald); font-weight:600;">(Suit + Hijab)</span>`;
+              priceEl.innerHTML = `${formatINR(comboPrice)} <span style="font-size:0.75rem; color:var(--c-emerald); font-weight:600;">(Suit + Hijab)</span>`;
             }
           } else {
             box.classList.remove("active");
             if (priceEl && product) {
-              priceEl.innerHTML = `${BOUTIQUE_CONFIG.currency}${product.price}`;
+              priceEl.innerHTML = formatINR(product.price);
             }
           }
         }
@@ -247,7 +252,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const defaultStitching = product.stitchingOptions ? product.stitchingOptions[0] : "Standard";
         addToCart(product, product.sizes[0], product.colors[0]?.name || "Default", defaultStitching, 1);
 
-        if (includeHijab && product.matchingHijab) {
+        if (includeHijab && product.matchingHijab && product.matchingHijab.price > 0) {
           addMatchingHijabToCart(product.matchingHijab, product.name);
         }
 
@@ -341,7 +346,7 @@ document.addEventListener("DOMContentLoaded", () => {
   // ==========================================================================
   // Cart Management
   // ==========================================================================
-  function addToCart(product, size, color, stitching = "Unstitched (3-Piece)", quantity = 1) {
+  function addToCart(product, size, color, stitching = "Standard", quantity = 1) {
     const existingIndex = state.cart.findIndex(
       item => item.id === product.id && item.size === size && item.color === color && item.stitching === stitching
     );
@@ -378,7 +383,7 @@ document.addEventListener("DOMContentLoaded", () => {
         name: hijabObj.name,
         price: hijabObj.price,
         image: hijabObj.image,
-        size: "Standard Hijab (190 x 75 cm)",
+        size: "Standard (190 x 75 cm)",
         color: "Matching Palette",
         stitching: "Finished Edges",
         fabric: hijabObj.fabric,
@@ -432,8 +437,8 @@ document.addEventListener("DOMContentLoaded", () => {
         <div class="cart-empty-state">
           <i class="fa-solid fa-bag-shopping"></i>
           <h4>Your Shopping Bag is Empty</h4>
-          <p>Discover our Pakistani 3-piece designer suits and luxury silk hijabs.</p>
-          <button class="btn btn-primary" id="btn-empty-shop">Explore Suits &amp; Hijabs</button>
+          <p>Discover our Pakistani suits, luxury Dubai abayas, kurtis, maxis &amp; hijabs.</p>
+          <button class="btn btn-primary" id="btn-empty-shop">Explore Collection</button>
         </div>
       `;
       const emptyShopBtn = document.getElementById("btn-empty-shop");
@@ -445,11 +450,11 @@ document.addEventListener("DOMContentLoaded", () => {
         });
       }
 
-      if (cartSubtotalEl) cartSubtotalEl.textContent = `${BOUTIQUE_CONFIG.currency}0`;
-      if (cartTotalEl) cartTotalEl.textContent = `${BOUTIQUE_CONFIG.currency}0`;
+      if (cartSubtotalEl) cartSubtotalEl.textContent = formatINR(0);
+      if (cartTotalEl) cartTotalEl.textContent = formatINR(0);
       if (discountRow) discountRow.style.display = "none";
       if (shippingProgressBar) shippingProgressBar.style.width = "0%";
-      if (shippingText) shippingText.textContent = `Add ${BOUTIQUE_CONFIG.currency}${BOUTIQUE_CONFIG.freeShippingThreshold} more for complimentary express delivery.`;
+      if (shippingText) shippingText.textContent = `Add ${formatINR(BOUTIQUE_CONFIG.freeShippingThreshold)} more for complimentary express delivery across India.`;
       return;
     }
 
@@ -461,10 +466,11 @@ document.addEventListener("DOMContentLoaded", () => {
         <div class="cart-item-details">
           <h4 class="cart-item-title">${item.name}</h4>
           <div class="cart-item-meta">
-            ${item.isHijab ? `<span style="color:var(--c-emerald); font-weight:700;">[MODEST HIJAB]</span>` : `<span>Style: <strong>${item.stitching}</strong> | Size: <strong>${item.size}</strong></span>`}
+            ${item.isHijab ? `<span style="color:var(--c-emerald); font-weight:700;">[MODEST HIJAB]</span>` : `<span>Size/Length: <strong>${item.size}</strong></span>`}
+            ${item.stitching && item.stitching !== 'Standard' ? `<br><small style="color:var(--c-text-muted);">Cut: ${item.stitching}</small>` : ''}
             ${item.pairedWith ? `<br><small style="color:var(--c-gold);">Matched with ${item.pairedWith}</small>` : ''}
           </div>
-          <div class="cart-item-price">${BOUTIQUE_CONFIG.currency}${item.price * item.quantity}</div>
+          <div class="cart-item-price">${formatINR(item.price * item.quantity)}</div>
           <div class="cart-item-controls">
             <div class="quantity-control">
               <button class="qty-btn qty-minus" data-index="${idx}">-</button>
@@ -493,12 +499,12 @@ document.addEventListener("DOMContentLoaded", () => {
     const discountVal = subtotal * state.appliedDiscount;
     const finalTotal = Math.max(0, subtotal - discountVal);
 
-    if (cartSubtotalEl) cartSubtotalEl.textContent = `${BOUTIQUE_CONFIG.currency}${subtotal.toFixed(0)}`;
-    if (cartTotalEl) cartTotalEl.textContent = `${BOUTIQUE_CONFIG.currency}${finalTotal.toFixed(0)}`;
+    if (cartSubtotalEl) cartSubtotalEl.textContent = formatINR(subtotal);
+    if (cartTotalEl) cartTotalEl.textContent = formatINR(finalTotal);
 
     if (state.appliedDiscount > 0 && discountRow && discountAmountEl) {
       discountRow.style.display = "flex";
-      discountAmountEl.textContent = `-${BOUTIQUE_CONFIG.currency}${discountVal.toFixed(0)} (${state.appliedPromoCode})`;
+      discountAmountEl.textContent = `-${formatINR(discountVal)} (${state.appliedPromoCode})`;
     } else if (discountRow) {
       discountRow.style.display = "none";
     }
@@ -507,11 +513,11 @@ document.addEventListener("DOMContentLoaded", () => {
     const diff = BOUTIQUE_CONFIG.freeShippingThreshold - subtotal;
     if (diff <= 0) {
       if (shippingProgressBar) shippingProgressBar.style.width = "100%";
-      if (shippingText) shippingText.innerHTML = `<span style="color: var(--c-gold); font-weight: 700;">🎉 Congratulations! You have unlocked Complimentary Express Shipping!</span>`;
+      if (shippingText) shippingText.innerHTML = `<span style="color: var(--c-gold); font-weight: 700;">🎉 Congratulations! You have unlocked Complimentary Express Delivery across India!</span>`;
     } else {
       const percentage = Math.min(100, Math.round((subtotal / BOUTIQUE_CONFIG.freeShippingThreshold) * 100));
       if (shippingProgressBar) shippingProgressBar.style.width = `${percentage}%`;
-      if (shippingText) shippingText.textContent = `Add ${BOUTIQUE_CONFIG.currency}${diff.toFixed(0)} more for complimentary express delivery.`;
+      if (shippingText) shippingText.textContent = `Add ${formatINR(diff)} more for complimentary express delivery.`;
     }
   }
 
@@ -549,28 +555,28 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // ==========================================================================
-  // WhatsApp Order & Direct Inquiries
+  // WhatsApp Order & Direct Inquiries in INR (₹)
   // ==========================================================================
   function generateWhatsAppOrderUrl() {
     if (state.cart.length === 0) return null;
 
     let itemsText = state.cart.map((item, idx) => {
-      return `${idx + 1}. *${item.name}*\n   • Option: ${item.stitching}\n   • Size: ${item.size}\n   • Color: ${item.color}\n   • Qty: ${item.quantity}\n   • Price: ${BOUTIQUE_CONFIG.currency}${item.price * item.quantity}`;
+      return `${idx + 1}. *${item.name}*\n   • Option/Cut: ${item.stitching || 'Standard'}\n   • Size/Length: ${item.size}\n   • Color: ${item.color}\n   • Qty: ${item.quantity}\n   • Price: ${formatINR(item.price * item.quantity)}`;
     }).join("\n\n");
 
     const subtotal = state.cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
     const discountVal = subtotal * state.appliedDiscount;
     const finalTotal = Math.max(0, subtotal - discountVal);
 
-    let summaryText = `\n\n*Order Summary:*` +
-      `\n• Subtotal: ${BOUTIQUE_CONFIG.currency}${subtotal.toFixed(0)}`;
+    let summaryText = `\n\n*Order Summary (INR ₹):*` +
+      `\n• Subtotal: ${formatINR(subtotal)}`;
 
     if (state.appliedDiscount > 0) {
-      summaryText += `\n• Discount (${state.appliedPromoCode}): -${BOUTIQUE_CONFIG.currency}${discountVal.toFixed(0)}`;
+      summaryText += `\n• Discount (${state.appliedPromoCode}): -${formatINR(discountVal)}`;
     }
 
-    summaryText += `\n• Total: *${BOUTIQUE_CONFIG.currency}${finalTotal.toFixed(0)}*`;
-    summaryText += `\n\nPlease confirm availability for stitching/dispatch. JazakAllah Khair!`;
+    summaryText += `\n• Total: *${formatINR(finalTotal)}*`;
+    summaryText += `\n\nPlease confirm availability for stitching and delivery dispatch. Shukran!`;
 
     const fullMessage = `${BOUTIQUE_CONFIG.whatsappDefaultMsg}\n\n${itemsText}${summaryText}`;
     const cleanNumber = BOUTIQUE_CONFIG.whatsappNumber.replace(/[^0-9]/g, "");
@@ -580,7 +586,7 @@ document.addEventListener("DOMContentLoaded", () => {
   if (waCheckoutBtn) {
     waCheckoutBtn.addEventListener("click", () => {
       if (state.cart.length === 0) {
-        showToast("Your bag is empty! Add a Pakistani suit or hijab first.", "fa-circle-exclamation");
+        showToast("Your bag is empty! Add an item first.", "fa-circle-exclamation");
         return;
       }
       const url = generateWhatsAppOrderUrl();
@@ -593,13 +599,13 @@ document.addEventListener("DOMContentLoaded", () => {
   function sendWhatsAppInquiry(product, selectedSize = null, selectedColor = null, includeHijab = false) {
     const size = selectedSize || product.sizes[0];
     const color = selectedColor || product.colors[0]?.name || "Default";
-    let msg = `Salam Zulfa Boutiq! I am inquiring about:\n\n*${product.name}*\n• SKU: ${product.id}\n• Price: ${BOUTIQUE_CONFIG.currency}${product.price}\n• Selected Size: ${size}\n• Selected Color: ${color}\n• Fabric: ${product.fabric}`;
+    let msg = `Salam Zulfa Boutiq! I am inquiring about:\n\n*${product.name}*\n• SKU: ${product.id}\n• Price: ${formatINR(product.price)}\n• Selected Size/Length: ${size}\n• Color: ${color}\n• Fabric: ${product.fabric}`;
 
-    if (includeHijab && product.matchingHijab) {
-      msg += `\n• *Including Matched Hijab*: ${product.matchingHijab.name} (+${BOUTIQUE_CONFIG.currency}${product.matchingHijab.price})`;
+    if (includeHijab && product.matchingHijab && product.matchingHijab.price > 0) {
+      msg += `\n• *Including Matched Hijab*: ${product.matchingHijab.name} (+${formatINR(product.matchingHijab.price)})`;
     }
 
-    msg += `\n\nIs this available in unstitched or custom stitched?`;
+    msg += `\n\nIs this in stock for dispatch?`;
     const cleanNumber = BOUTIQUE_CONFIG.whatsappNumber.replace(/[^0-9]/g, "");
     const url = `https://wa.me/${cleanNumber}?text=${encodeURIComponent(msg)}`;
     window.open(url, "_blank");
@@ -643,22 +649,25 @@ document.addEventListener("DOMContentLoaded", () => {
             <span>(${product.reviewCount} verified reviews)</span>
           </div>
           <div class="modal-price-row">
-            <span class="modal-price" id="modal-price-val">${BOUTIQUE_CONFIG.currency}${product.price}</span>
-            ${product.originalPrice ? `<span class="product-original-price">${BOUTIQUE_CONFIG.currency}${product.originalPrice}</span>` : ''}
+            <span class="modal-price" id="modal-price-val">${formatINR(product.price)}</span>
+            ${product.originalPrice ? `<span class="product-original-price">${formatINR(product.originalPrice)}</span>` : ''}
           </div>
           <p class="modal-desc">${product.description}</p>
 
           ${product.suitComponents ? `
             <div class="modal-suit-specs">
-              <div class="spec-line"><span class="spec-badge">Kameez</span> ${product.suitComponents.shirt}</div>
-              <div class="spec-line"><span class="spec-badge">Dupatta</span> ${product.suitComponents.dupatta}</div>
-              <div class="spec-line"><span class="spec-badge">Trouser</span> ${product.suitComponents.trouser || product.suitComponents.gharara}</div>
-              ${product.suitComponents.lining ? `<div class="spec-line"><span class="spec-badge">Inner</span> ${product.suitComponents.lining}</div>` : ''}
+              ${product.suitComponents.shirt ? `<div class="spec-line"><span class="spec-badge">Shirt</span> ${product.suitComponents.shirt}</div>` : ''}
+              ${product.suitComponents.dupatta ? `<div class="spec-line"><span class="spec-badge">Dupatta</span> ${product.suitComponents.dupatta}</div>` : ''}
+              ${product.suitComponents.trouser ? `<div class="spec-line"><span class="spec-badge">Trouser</span> ${product.suitComponents.trouser}</div>` : ''}
+              ${product.suitComponents.abaya ? `<div class="spec-line"><span class="spec-badge">Abaya</span> ${product.suitComponents.abaya}</div>` : ''}
+              ${product.suitComponents.innerSlip ? `<div class="spec-line"><span class="spec-badge">Inner Slip</span> ${product.suitComponents.innerSlip}</div>` : ''}
+              ${product.suitComponents.kurti ? `<div class="spec-line"><span class="spec-badge">Kurti</span> ${product.suitComponents.kurti}</div>` : ''}
+              ${product.suitComponents.maxi ? `<div class="spec-line"><span class="spec-badge">Maxi</span> ${product.suitComponents.maxi}</div>` : ''}
             </div>
           ` : ''}
 
           <!-- Matching Hijab Pair Box inside Modal -->
-          ${product.matchingHijab ? `
+          ${product.matchingHijab && product.matchingHijab.price > 0 ? `
             <div class="modal-hijab-box">
               <div class="modal-hijab-thumb">
                 <img src="${product.matchingHijab.image}" alt="${product.matchingHijab.name}" />
@@ -668,7 +677,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 <div class="modal-hijab-sub">${product.matchingHijab.name} (${product.matchingHijab.fabric})</div>
               </div>
               <button class="modal-hijab-btn" id="modal-pair-hijab-btn">
-                <i class="fa-solid fa-plus"></i> Add (+${BOUTIQUE_CONFIG.currency}${product.matchingHijab.price})
+                <i class="fa-solid fa-plus"></i> Add (+${formatINR(product.matchingHijab.price)})
               </button>
             </div>
           ` : ''}
@@ -677,7 +686,7 @@ document.addEventListener("DOMContentLoaded", () => {
           ${product.stitchingOptions && product.stitchingOptions.length > 1 ? `
             <div class="option-group">
               <div class="option-label">
-                <span>Stitching Option: <strong id="selected-stitching-label">${product.stitchingOptions[0]}</strong></span>
+                <span>Selection: <strong id="selected-stitching-label">${product.stitchingOptions[0]}</strong></span>
               </div>
               <div class="size-chips">
                 ${product.stitchingOptions.map((opt, i) => `
@@ -703,11 +712,11 @@ document.addEventListener("DOMContentLoaded", () => {
             </div>
           </div>
 
-          <!-- Size selection -->
+          <!-- Size / Length selection -->
           <div class="option-group">
             <div class="option-label">
-              <span>Select Size: <strong id="selected-size-label">${product.sizes[0]}</strong></span>
-              <a href="#consultation" id="btn-custom-fit-link" style="font-size: 0.75rem; color: var(--c-gold); text-decoration: underline;">Custom Measurements?</a>
+              <span>Select Size / Length: <strong id="selected-size-label">${product.sizes[0]}</strong></span>
+              <a href="#consultation" id="btn-custom-fit-link" style="font-size: 0.75rem; color: var(--c-gold); text-decoration: underline;">Custom Sizing?</a>
             </div>
             <div class="size-chips">
               ${product.sizes.map((s, i) => `
@@ -747,15 +756,15 @@ document.addEventListener("DOMContentLoaded", () => {
         state.pairedHijabSelected = !state.pairedHijabSelected;
         if (state.pairedHijabSelected) {
           modalPairHijabBtn.classList.add("added");
-          modalPairHijabBtn.innerHTML = `<i class="fa-solid fa-check"></i> Hijab Added (+${BOUTIQUE_CONFIG.currency}${product.matchingHijab.price})`;
+          modalPairHijabBtn.innerHTML = `<i class="fa-solid fa-check"></i> Hijab Added (+${formatINR(product.matchingHijab.price)})`;
           if (modalPriceVal) {
-            modalPriceVal.innerHTML = `${BOUTIQUE_CONFIG.currency}${product.price + product.matchingHijab.price} <span style="font-size:0.8rem; color:var(--c-emerald);">(with Hijab)</span>`;
+            modalPriceVal.innerHTML = `${formatINR(product.price + product.matchingHijab.price)} <span style="font-size:0.8rem; color:var(--c-emerald);">(with Hijab)</span>`;
           }
         } else {
           modalPairHijabBtn.classList.remove("added");
-          modalPairHijabBtn.innerHTML = `<i class="fa-solid fa-plus"></i> Add (+${BOUTIQUE_CONFIG.currency}${product.matchingHijab.price})`;
+          modalPairHijabBtn.innerHTML = `<i class="fa-solid fa-plus"></i> Add (+${formatINR(product.matchingHijab.price)})`;
           if (modalPriceVal) {
-            modalPriceVal.innerHTML = `${BOUTIQUE_CONFIG.currency}${product.price}`;
+            modalPriceVal.innerHTML = formatINR(product.price);
           }
         }
       });
@@ -853,7 +862,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (!cleanQuery) {
       searchResults.innerHTML = `
         <div style="color: #ADA59A; text-align: center; padding: 20px;">
-          Type outfit name, category, or fabric (e.g., "Lawn", "Chiffon", "Hijab", "Velvet")...
+          Type outfit, abaya, kurti, maxi, or fabric (e.g., "Abaya", "Chikankari", "Maxi", "Silk")...
         </div>
       `;
       return;
@@ -869,7 +878,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (matches.length === 0) {
       searchResults.innerHTML = `
         <div style="color: #ADA59A; text-align: center; padding: 20px;">
-          No bespoke creations found matching "${query}".
+          No creations found matching "${query}".
         </div>
       `;
       return;
@@ -883,7 +892,7 @@ document.addEventListener("DOMContentLoaded", () => {
         <div>
           <div style="font-size: 0.72rem; color: var(--c-gold); text-transform: uppercase;">${p.subcategory}</div>
           <div style="font-family: var(--font-serif); font-size: 1.05rem;">${p.name}</div>
-          <div style="font-size: 0.85rem; color: #EDE7DD;">${BOUTIQUE_CONFIG.currency}${p.price}</div>
+          <div style="font-size: 0.85rem; color: #EDE7DD;">${formatINR(p.price)}</div>
         </div>
       </div>
     `).join("");
@@ -913,9 +922,9 @@ document.addEventListener("DOMContentLoaded", () => {
       const name = document.getElementById("book-name")?.value || "Valued Client";
       const phone = document.getElementById("book-phone")?.value || "";
       const date = document.getElementById("book-date")?.value || "Soon";
-      const service = document.getElementById("book-service")?.value || "Pakistani Suit Fitting";
+      const service = document.getElementById("book-service")?.value || "Bespoke Fitting";
 
-      showToast(`✨ Shukran, ${name}! Your consultation request for ${service} on ${date} is confirmed. Our head stylist will contact you at ${phone}.`, "fa-calendar-check");
+      showToast(`✨ Shukran, ${name}! Your consultation request for ${service} on ${date} is confirmed. Our stylist will contact you on WhatsApp at ${phone}.`, "fa-calendar-check");
       consultationForm.reset();
     });
   }
@@ -986,10 +995,10 @@ document.addEventListener("DOMContentLoaded", () => {
   if (standardCheckoutBtn) {
     standardCheckoutBtn.addEventListener("click", () => {
       if (state.cart.length === 0) {
-        showToast("Your bag is empty! Add an outfit first.", "fa-circle-exclamation");
+        showToast("Your bag is empty! Add an item first.", "fa-circle-exclamation");
         return;
       }
-      showToast("Directing to WhatsApp checkout for verified Pakistani bespoke orders...", "fa-bag-shopping");
+      showToast("Directing to WhatsApp checkout in Indian Rupees (₹)...", "fa-bag-shopping");
       setTimeout(() => {
         const url = generateWhatsAppOrderUrl();
         if (url) window.open(url, "_blank");
