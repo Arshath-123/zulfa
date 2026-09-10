@@ -1,46 +1,63 @@
-// Zulfa Boutiq - Luxury Boutique Catalog Data
+// ==========================================================================
+// ZULFA BOUTIQ - Pakistani Suits & Luxury Hijab Modest Couture Data
+// ==========================================================================
+
 const BOUTIQUE_CONFIG = {
   name: "Zulfa Boutiq",
-  tagline: "Timeless Elegance, Modern Craftsmanship",
+  tagline: "Pakistani Haute Prêt & Luxury Modest Couture",
   currency: "$",
-  whatsappNumber: "+919876543210", // Customize with boutique WhatsApp number
-  whatsappDefaultMsg: "Hello Zulfa Boutiq! I'm interested in ordering:",
+  whatsappNumber: "+919876543210",
+  whatsappDefaultMsg: "Salam Zulfa Boutiq! I would like to order this Pakistani suit & modest wear:",
   freeShippingThreshold: 200,
   promoCodes: {
-    "ZULFA10": 0.10, // 10% off
-    "ELEGANCE15": 0.15, // 15% off
-    "VIP20": 0.20 // 20% off
+    "MODEST10": 0.10, // 10% off
+    "ZULFA15": 0.15,  // 15% off
+    "EIDVIP20": 0.20  // 20% off
   }
 };
 
 const CATEGORIES = [
-  { id: "all", label: "All Creations" },
-  { id: "new-in", label: "New In" },
-  { id: "bridal", label: "Bridal Couture" },
-  { id: "festive", label: "Festive Luxe" },
-  { id: "pret", label: "Prêt-à-Porter" },
-  { id: "fusion", label: "Modern Fusion" }
+  { id: "all", label: "All Collections" },
+  { id: "pakistani-suits", label: "Pakistani 3-Piece Suits" },
+  { id: "luxury-lawn", label: "Luxury Lawn Edition" },
+  { id: "chiffon-formals", label: "Chiffon & Wedding Formals" },
+  { id: "hijabs", label: "Premium Hijabs & Stoles" },
+  { id: "velvet-winter", label: "Velvet & Karandi Edit" }
 ];
 
 const PRODUCTS = [
   {
-    id: "zb-101",
-    name: "Nur-e-Jahan Crimson Bridal Lehenga",
-    category: "bridal",
-    subcategory: "Bridal Couture",
-    price: 890,
-    originalPrice: 1100,
-    badge: "Bespoke Couture",
-    rating: 4.9,
-    reviewCount: 38,
-    fabric: "Pure Raw Silk & Organza with Zardozi Work",
-    description: "An opulent crimson bridal masterpiece handcrafted with antique tilla, French bullion knot embroidery, hand-cut sequins, and zardozi embellishments. Paired with a double dupatta in scalloped silk organza.",
-    sizes: ["XS", "S", "M", "L", "Custom Made"],
+    id: "zb-pk-01",
+    name: "Gul-e-Noor 3-Piece Embroidered Chiffon Suit",
+    category: "chiffon-formals",
+    subcategory: "Wedding & Festive Formal",
+    price: 340,
+    originalPrice: 420,
+    badge: "Pakistani Formal",
+    rating: 5.0,
+    reviewCount: 42,
+    fabric: "Pure Crinkle Chiffon with Organza Jaal & Silk Slip",
+    description: "An ethereal 3-piece Pakistani formal ensemble featuring hand-worked dabka, resham floral jaal, and cutwork borders on pure crinkle chiffon. Paired with a heavily embroidered 4-sided scallop organza dupatta and raw silk trousers.",
+    suitComponents: {
+      shirt: "Pure Crinkle Chiffon with Heavy Resham & Tilla Front (3.25m)",
+      dupatta: "Embroidered Organza with Hand-Cut Scallop Borders (2.75m)",
+      trouser: "Dyed Raw Silk Cigarette Pants / Shalwar (2.5m)",
+      lining: "Dyed Cotton Silk Inner Included"
+    },
+    stitchingOptions: ["Unstitched (3-Piece)", "Stitched Ready-to-Wear", "Custom Made-to-Measure"],
+    sizes: ["Unstitched", "XS", "S", "M", "L", "XL", "Custom Size"],
     colors: [
-      { name: "Royal Crimson", hex: "#7A1C28" },
-      { name: "Vintage Rose", hex: "#C48288" },
-      { name: "Regal Emerald", hex: "#1C4336" }
+      { name: "Dusty Mauve", hex: "#8E5B5B" },
+      { name: "Sage Pistachio", hex: "#9EAA96" },
+      { name: "Antique Ivory", hex: "#F3EDE2" }
     ],
+    matchingHijab: {
+      id: "hj-match-01",
+      name: "Dusty Mauve Georgette Silk Hijab",
+      price: 22,
+      fabric: "Premium Georgette with Sheen",
+      image: "https://images.unsplash.com/photo-1584917865442-de89df76afd3?q=80&w=600&auto=format&fit=crop"
+    },
     images: [
       "https://images.unsplash.com/photo-1583391733956-3750e0ff4e8b?q=80&w=1000&auto=format&fit=crop",
       "https://images.unsplash.com/photo-1610030469983-98e550d6193c?q=80&w=1000&auto=format&fit=crop"
@@ -50,23 +67,37 @@ const PRODUCTS = [
     isNew: true
   },
   {
-    id: "zb-102",
-    name: "Zoya Emerald Velvet Anarkali Set",
-    category: "festive",
-    subcategory: "Festive Luxe",
-    price: 460,
-    originalPrice: 550,
-    badge: "Bestseller",
-    rating: 5.0,
-    reviewCount: 47,
-    fabric: "Micro-Velvet & Tissue Organza",
-    description: "Deep forest emerald floor-length velvet gown accented with delicate gota patti borders, dabka neckwork, and a sheer tissue organza stole adorned with hand-knotted pearls.",
-    sizes: ["XS", "S", "M", "L", "XL"],
+    id: "zb-pk-02",
+    name: "Meher Emerald 3-Piece Velvet Luxury Suit",
+    category: "velvet-winter",
+    subcategory: "Royal Velvet Formal",
+    price: 480,
+    originalPrice: 590,
+    badge: "Karachi Runway",
+    rating: 4.9,
+    reviewCount: 36,
+    fabric: "Micro-Velvet 9000 with Tissue Banarasi Dupatta",
+    description: "Deep forest emerald royal velvet long kurta embroidered with antique golden zardozi, kora, and French knot accents. Comes with a hand-woven tissue Banarasi zari dupatta and embroidered velvet trousers.",
+    suitComponents: {
+      shirt: "Pure Micro 9000 Velvet Embroidered Front & Sleeves",
+      dupatta: "Handwoven Tissue Banarasi Gold Zari Dupatta (2.6m)",
+      trouser: "Dyed Velvet Straight Trouser with Gota Borders",
+      lining: "Pure Cotton Silk Lining Included"
+    },
+    stitchingOptions: ["Unstitched (3-Piece)", "Stitched Ready-to-Wear", "Custom Made-to-Measure"],
+    sizes: ["Unstitched", "XS", "S", "M", "L", "XL", "Custom Size"],
     colors: [
       { name: "Emerald Glaze", hex: "#183B2E" },
-      { name: "Midnight Sapphire", hex: "#152438" },
-      { name: "Wine Mulberry", hex: "#471725" }
+      { name: "Deep Maroon", hex: "#4A121A" },
+      { name: "Midnight Noir", hex: "#141414" }
     ],
+    matchingHijab: {
+      id: "hj-match-02",
+      name: "Emerald Modal Silk Luxury Hijab",
+      price: 24,
+      fabric: "Pure Turkish Modal Silk",
+      image: "https://images.unsplash.com/photo-1566737236500-c8ac43014a67?q=80&w=600&auto=format&fit=crop"
+    },
     images: [
       "https://images.unsplash.com/photo-1566737236500-c8ac43014a67?q=80&w=1000&auto=format&fit=crop",
       "https://images.unsplash.com/photo-1539109136881-3be0616acf4b?q=80&w=1000&auto=format&fit=crop"
@@ -76,48 +107,37 @@ const PRODUCTS = [
     isNew: false
   },
   {
-    id: "zb-103",
-    name: "Aira Champagne Gold Silk Kaftan",
-    category: "pret",
-    subcategory: "Prêt-à-Porter",
-    price: 240,
-    originalPrice: 295,
-    badge: "Trending",
+    id: "zb-pk-03",
+    name: "Afreen Pastel Mint 3-Piece Luxury Lawn",
+    category: "luxury-lawn",
+    subcategory: "Designer Lawn Collection",
+    price: 195,
+    originalPrice: 240,
+    badge: "Summer Bestseller",
     rating: 4.8,
-    reviewCount: 29,
-    fabric: "Hammered Crepe Silk & Crystal Tassels",
-    description: "Effortlessly glamorous draped silhouette in soft champagne metallic silk. Features hand-embroidered neckline crystals, batwing sleeves, and an adjustable internal cinch tie.",
-    sizes: ["Free Size (Fits XS - XL)"],
+    reviewCount: 54,
+    fabric: "Supima Lawn with Schiffli Chikankari & Silk Dupatta",
+    description: "Premium Pakistani supima lawn featuring intricate shadow-work Chikankari schiffli embroidery. Accented with laser-cut organza hem borders and paired with an authentic digital printed 100% pure silk dupatta.",
+    suitComponents: {
+      shirt: "Digital Printed & Embroidered Schiffli Lawn (3m)",
+      dupatta: "100% Pure Silk Digital Printed Dupatta (2.5m)",
+      trouser: "Cambric Dyed Cotton Trouser with Lace Border (2.5m)",
+      patches: "2 Embroidered Organza Borders for Neckline & Daman"
+    },
+    stitchingOptions: ["Unstitched (3-Piece)", "Stitched Ready-to-Wear"],
+    sizes: ["Unstitched", "XS", "S", "M", "L", "XL"],
     colors: [
-      { name: "Champagne Shimmer", hex: "#DEC8A4" },
-      { name: "Rose Quartz", hex: "#DEB8B8" },
-      { name: "Ivory Pearl", hex: "#F3EDE2" }
+      { name: "Mint Mist", hex: "#C8DBC8" },
+      { name: "Soft Lilac", hex: "#D6CBE3" },
+      { name: "Peach Sherbet", hex: "#F2CEBC" }
     ],
-    images: [
-      "https://images.unsplash.com/photo-1515372039744-b8f02a3ae446?q=80&w=1000&auto=format&fit=crop",
-      "https://images.unsplash.com/photo-1496747611176-843222e1e57c?q=80&w=1000&auto=format&fit=crop"
-    ],
-    inStock: true,
-    featured: true,
-    isNew: true
-  },
-  {
-    id: "zb-104",
-    name: "Mehtab Ivory Pearl Sharara Suit",
-    category: "festive",
-    subcategory: "Festive Luxe",
-    price: 520,
-    originalPrice: 620,
-    badge: "Limited Edition",
-    rating: 4.9,
-    reviewCount: 34,
-    fabric: "Chanderi Silk & Handloom Tissue",
-    description: "Pure ivory tiered sharara paired with a short kurti laden with Swarovski crystal dusting, resham floral jaal, and a contrast blush pink gossamer dupatta.",
-    sizes: ["XS", "S", "M", "L", "XL", "Custom Made"],
-    colors: [
-      { name: "Ivory Pearl", hex: "#F5F2EB" },
-      { name: "Mint Pistachio", hex: "#D6E5D8" }
-    ],
+    matchingHijab: {
+      id: "hj-match-03",
+      name: "Pastel Mint Bamboo Jersey Hijab",
+      price: 19,
+      fabric: "Breathable Organic Bamboo Jersey",
+      image: "https://images.unsplash.com/photo-1515372039744-b8f02a3ae446?q=80&w=600&auto=format&fit=crop"
+    },
     images: [
       "https://images.unsplash.com/photo-1572804013309-59a88b7e92f1?q=80&w=1000&auto=format&fit=crop",
       "https://images.unsplash.com/photo-1509631179647-0177331693ae?q=80&w=1000&auto=format&fit=crop"
@@ -127,175 +147,241 @@ const PRODUCTS = [
     isNew: true
   },
   {
-    id: "zb-105",
-    name: "Sultana Rose Dust Cape & Bustier Set",
-    category: "fusion",
-    subcategory: "Modern Fusion",
+    id: "zb-pk-04",
+    name: "Roshni Champagne Raw Silk Angrakha Set",
+    category: "pakistani-suits",
+    subcategory: "Haute Prêt Pakistani",
     price: 380,
-    originalPrice: 450,
-    badge: "Runway Pick",
-    rating: 4.9,
-    reviewCount: 22,
-    fabric: "Georgette with Mirror & Cutdana Details",
-    description: "A contemporary three-piece ensemble: structured embroidered bustier, high-waisted flared palazzos, and a cascading sheer floor-length embroidered cape jacket.",
-    sizes: ["XS", "S", "M", "L"],
+    originalPrice: 460,
+    badge: "Heritage Angrakha",
+    rating: 5.0,
+    reviewCount: 28,
+    fabric: "Pure Rawaan Silk with Marori & Tilla Work",
+    description: "Classic Mughal angrakha flare silhouette in champagne raw silk with hand-twisted marori threadwork and tassel closures. Comes with crushed shimmer silk sharara pants and an organza dupatta.",
+    suitComponents: {
+      shirt: "Pure Rawaan Silk Flared Angrakha (Full Embroidered)",
+      dupatta: "Scalloped Sheer Organza with Pearl Sprinkles (2.5m)",
+      trouser: "Crushed Silk Sharara Flared Trousers"
+    },
+    stitchingOptions: ["Stitched Ready-to-Wear", "Custom Made-to-Measure"],
+    sizes: ["XS", "S", "M", "L", "XL", "Custom Size"],
     colors: [
-      { name: "Dusty Rose", hex: "#B98585" },
-      { name: "Lavender Fog", hex: "#C3BACB" },
-      { name: "Onyx Black", hex: "#1A1A1A" }
+      { name: "Champagne Gold", hex: "#DEC8A4" },
+      { name: "Rose Quartz", hex: "#DEB8B8" }
     ],
+    matchingHijab: {
+      id: "hj-match-04",
+      name: "Champagne Satin Sheen Turkish Hijab",
+      price: 25,
+      fabric: "Turkish Silk-Satin Blend",
+      image: "https://images.unsplash.com/photo-1584917865442-de89df76afd3?q=80&w=600&auto=format&fit=crop"
+    },
     images: [
-      "https://images.unsplash.com/photo-1550614000-4895a10e1bfd?q=80&w=1000&auto=format&fit=crop",
-      "https://images.unsplash.com/photo-1529139574466-a303027c1d8b?q=80&w=1000&auto=format&fit=crop"
+      "https://images.unsplash.com/photo-1515372039744-b8f02a3ae446?q=80&w=1000&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1496747611176-843222e1e57c?q=80&w=1000&auto=format&fit=crop"
     ],
     inStock: true,
     featured: true,
-    isNew: false
+    isNew: true
   },
   {
-    id: "zb-106",
-    name: "Shahana Marigold Haldi Co-ord Set",
-    category: "pret",
-    subcategory: "Prêt-à-Porter",
-    price: 210,
-    originalPrice: 260,
-    badge: "Festive Must-Have",
-    rating: 4.7,
-    reviewCount: 19,
-    fabric: "Mulberry Silk Twill",
-    description: "Vibrant marigold yellow asymmetric overlap tunic with delicate French knot lapel detailing, complemented by tapered cigarette pants.",
-    sizes: ["XS", "S", "M", "L", "XL"],
+    id: "zb-hj-05",
+    name: "Medina Luxe Turkish Satin Silk Hijab",
+    category: "hijabs",
+    subcategory: "Designer Modest Stole",
+    price: 28,
+    originalPrice: 38,
+    badge: "Must-Have",
+    rating: 4.9,
+    reviewCount: 89,
+    fabric: "100% Turkish Mulberry Silk Satin (190cm x 75cm)",
+    description: "Our signature Turkish satin silk hijab offers a non-slip textured back with an exquisite front pearlescent sheen. Drapes effortlessly with royal elegance, perfect for weddings, Eid celebrations, and everyday luxury.",
+    suitComponents: null,
+    stitchingOptions: ["Standard Hijab (190 x 75 cm)"],
+    sizes: ["Standard Hijab (190 x 75 cm)"],
     colors: [
-      { name: "Marigold Sun", hex: "#E9A825" },
-      { name: "Tangerine Silk", hex: "#E26D38" }
+      { name: "Champagne Pearl", hex: "#F2E8DA" },
+      { name: "Deep Taupe", hex: "#7E685A" },
+      { name: "Emerald Forest", hex: "#1B4332" },
+      { name: "Blush Rose", hex: "#CE9B9B" },
+      { name: "Midnight Black", hex: "#111111" }
     ],
+    matchingHijab: null,
     images: [
-      "https://images.unsplash.com/photo-1502716119720-b23a93e5fe1b?q=80&w=1000&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1584917865442-de89df76afd3?q=80&w=1000&auto=format&fit=crop",
       "https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=1000&auto=format&fit=crop"
     ],
     inStock: true,
+    featured: true,
+    isNew: false
+  },
+  {
+    id: "zb-hj-06",
+    name: "Aura Premium Ribbed Modal Cotton Hijab",
+    category: "hijabs",
+    subcategory: "Breathable Daily Luxury",
+    price: 21,
+    originalPrice: 28,
+    badge: "Comfort Edit",
+    rating: 5.0,
+    reviewCount: 63,
+    fabric: "100% Organic Beechwood Modal (200cm x 80cm)",
+    description: "Featherlight, breathable, and completely pin-free friendly. Our ribbed modal hijab stays in place without slipping, offering cloud-like softness and zero snagging on earrings or undercaps.",
+    suitComponents: null,
+    stitchingOptions: ["Maxi Stole (200 x 80 cm)"],
+    sizes: ["Maxi Stole (200 x 80 cm)"],
+    colors: [
+      { name: "Caramel Latte", hex: "#C69B7B" },
+      { name: "Warm Khaki", hex: "#9E9079" },
+      { name: "Cloud Ivory", hex: "#FDFBF7" },
+      { name: "Charcoal Slate", hex: "#3A3D40" }
+    ],
+    matchingHijab: null,
+    images: [
+      "https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?q=80&w=1000&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=80&w=1000&auto=format&fit=crop"
+    ],
+    inStock: true,
     featured: false,
     isNew: true
   },
   {
-    id: "zb-107",
-    name: "Firdaus Pastel Lilac Walima Gown",
-    category: "bridal",
-    subcategory: "Bridal Couture",
-    price: 780,
-    originalPrice: 940,
-    badge: "Bridal Luxe",
+    id: "zb-pk-07",
+    name: "Zarrin Crimson Bridal Pakistani Gharara",
+    category: "chiffon-formals",
+    subcategory: "Lahori Bridal Couture",
+    price: 920,
+    originalPrice: 1150,
+    badge: "Bespoke Royal",
     rating: 5.0,
-    reviewCount: 31,
-    fabric: "French Tulle, Silk Net & Seed Pearls",
-    description: "Ethereal pastel lilac trailing gown encrusted with thousands of micro-pearls, silver nakshi threadwork, and iridescent glass beads. Includes a cathedral-length veil.",
-    sizes: ["XS", "S", "M", "L", "Custom Made"],
+    reviewCount: 24,
+    fabric: "Pure Tissue Chiffon with Heavy Kora & Dabka Zardozi",
+    description: "An authentic Lahore bridal classic: deep carmine red short kurti laden with hand-crafted Mughal kora dabka, accompanied by a voluminous two-tier pleated farshi gharara and scalloped royal veil.",
+    suitComponents: {
+      shirt: "Pure Chiffon Short Kurti with Zardozi Jaal",
+      dupatta: "Heavy 4-Sided Hand-Cut Embroidered Bridal Veil (2.8m)",
+      gharara: "Double-Tiered Pleated Farshi Gharara with Gota Borders"
+    },
+    stitchingOptions: ["Custom Made-to-Measure Bridal Fitting"],
+    sizes: ["Custom Made-to-Measure"],
     colors: [
-      { name: "Lilac Frost", hex: "#CBC0D3" },
-      { name: "Powder Blue", hex: "#B8CBE0" },
-      { name: "Blush Champagne", hex: "#EAD7CE" }
+      { name: "Royal Crimson", hex: "#7A1C28" },
+      { name: "Rust Terracotta", hex: "#9E3D24" }
     ],
+    matchingHijab: {
+      id: "hj-match-07",
+      name: "Crimson Bridal Satin Stole with Pearl Edge",
+      price: 32,
+      fabric: "Silk Satin with Micro-Pearls",
+      image: "https://images.unsplash.com/photo-1583391733956-3750e0ff4e8b?q=80&w=600&auto=format&fit=crop"
+    },
     images: [
-      "https://images.unsplash.com/photo-1490481651871-ab68de25d43d?q=80&w=1000&auto=format&fit=crop",
-      "https://images.unsplash.com/photo-1485968579580-b6d095142e6e?q=80&w=1000&auto=format&fit=crop"
+      "https://images.unsplash.com/photo-1583391733956-3750e0ff4e8b?q=80&w=1000&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1610030469983-98e550d6193c?q=80&w=1000&auto=format&fit=crop"
     ],
     inStock: true,
     featured: true,
     isNew: false
   },
   {
-    id: "zb-108",
-    name: "Noor Midnight Black Draped Saree",
-    category: "fusion",
-    subcategory: "Modern Fusion",
-    price: 340,
-    originalPrice: 410,
-    badge: "Cocktail Edit",
-    rating: 4.8,
-    reviewCount: 26,
-    fabric: "Pre-stitched Satin Georgette with Sequin Embellishments",
-    description: "Modern pre-draped luxury saree for hassle-free evening glam. Features a structured sweetheart-neck sculpted blouse and featherlight pleated fall.",
-    sizes: ["XS", "S", "M", "L"],
+    id: "zb-pk-08",
+    name: "Sahar Ivory Organza 3-Piece Kalidar",
+    category: "pakistani-suits",
+    subcategory: "Pakistani Haute Prêt",
+    price: 360,
+    originalPrice: 440,
+    badge: "Eid Signature",
+    rating: 4.9,
+    reviewCount: 31,
+    fabric: "Korean Organza with Silver Tilla & Sheer Jacquard Dupatta",
+    description: "Floor-length 14-kali kalidar anarkali in ivory pearl organza with mirror-reflection embroidery and scalloped cuffs. Complemented with a pure woven organza jacquard dupatta and slim trousers.",
+    suitComponents: {
+      shirt: "14-Kali Organza Kurta with Silver Tilla (Full Lined)",
+      dupatta: "Pure Woven Organza Jacquard with Pearl Tassels (2.6m)",
+      trouser: "Dyed Raw Silk Tailored Pants"
+    },
+    stitchingOptions: ["Unstitched (3-Piece)", "Stitched Ready-to-Wear", "Custom Size"],
+    sizes: ["Unstitched", "XS", "S", "M", "L", "XL"],
     colors: [
-      { name: "Midnight Black", hex: "#111111" },
-      { name: "Deep Ruby", hex: "#56121D" },
-      { name: "Metallic Pewter", hex: "#63686D" }
+      { name: "Pearl Ivory", hex: "#FAF5ED" },
+      { name: "Blush Champagne", hex: "#EAD7CE" }
     ],
+    matchingHijab: {
+      id: "hj-match-08",
+      name: "Pearl Ivory Georgette Chiffon Hijab",
+      price: 20,
+      fabric: "Crinkle Georgette",
+      image: "https://images.unsplash.com/photo-1509631179647-0177331693ae?q=80&w=600&auto=format&fit=crop"
+    },
     images: [
-      "https://images.unsplash.com/photo-1518049362265-d5b2a6467637?q=80&w=1000&auto=format&fit=crop",
-      "https://images.unsplash.com/photo-1544441893-675973e31985?q=80&w=1000&auto=format&fit=crop"
+      "https://images.unsplash.com/photo-1509631179647-0177331693ae?q=80&w=1000&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1572804013309-59a88b7e92f1?q=80&w=1000&auto=format&fit=crop"
     ],
     inStock: true,
     featured: false,
     isNew: true
+  }
+];
+
+const HIJAB_FABRIC_GUIDE = [
+  {
+    fabricName: "Turkish Silk Satin",
+    tagline: "Royal Lustre for Weddings & Eid",
+    opacity: "100% Fully Opaque",
+    breathability: "Medium Luxe",
+    drape: "Flowing & Fluid Structure",
+    bestFor: "Pakistani Chiffon & Velvet Formals, Evening Gatherings",
+    pinsNeeded: "Magnets Recommended",
+    desc: "Woven in Bursa, Turkey. Features a luminous glossy exterior with a textured cotton-blend reverse side to prevent slipping on hair."
+  },
+  {
+    fabricName: "Premium Georgette Chiffon",
+    tagline: "Timeless Occasion Elegance",
+    opacity: "85% (Needs Undercap)",
+    breathability: "High & Airy",
+    drape: "Effortless Cascading Folds",
+    bestFor: "Luxury Lawn, Chiffon Suits, Daily Chic",
+    pinsNeeded: "Hijab Pins / Magnets",
+    desc: "Lightly textured crinkle georgette that stays neat all day without creasing. Provides an airy modest frame around the face."
+  },
+  {
+    fabricName: "Organic Ribbed Modal",
+    tagline: "Ultra-Soft Pin-Free Everyday Comfort",
+    opacity: "95% Opaque",
+    breathability: "Maximum Breathable",
+    drape: "Molds Perfectly to Head Shape",
+    bestFor: "Summer Lawn Suits, Work, Travel & Long Hours",
+    pinsNeeded: "Zero Pins Required",
+    desc: "Crafted from natural beechwood fibers. Super stretchable, buttery soft, and non-slip without requiring any pins or magnets."
   }
 ];
 
 const TESTIMONIALS = [
   {
     id: 1,
-    name: "Fatima Al-Mansoor",
-    role: "Bride - Dubai, UAE",
+    name: "Dr. Hiba Tariq",
+    role: "Modest Fashion Creator - Toronto, Canada",
     image: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=300&auto=format&fit=crop",
-    quote: "Zulfa Boutiq crafted my dream bridal lehenga for my destination wedding. The custom fitting was flawless, and the zardozi detail left every guest breathless!",
+    quote: "Finding authentic Pakistani 3-piece designer suits with perfectly color-matched hijabs used to take weeks of hunting. Zulfa Boutiq's matching hijab feature is revolutionary! The chiffon embroidery is breathtaking.",
     rating: 5,
-    outfit: "Nur-e-Jahan Bridal Lehenga"
+    outfit: "Gul-e-Noor Chiffon Suit + Mauve Silk Hijab"
   },
   {
     id: 2,
-    name: "Ayesha Siddiqui",
-    role: "Fashion Stylist - London, UK",
+    name: "Mariam Al-Khatib",
+    role: "Bride - Dallas, Texas",
     image: "https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?q=80&w=300&auto=format&fit=crop",
-    quote: "The fabric quality and modern silhouettes rival top international fashion weeks. The WhatsApp ordering process was smooth, professional, and delivered right on time.",
+    quote: "Ordered the velvet formal suit for my sister's Walima in Karachi. The custom tailoring was centimeter-perfect and the Turkish satin hijab gave the entire look imperial elegance. Customer service on WhatsApp was 10/10!",
     rating: 5,
-    outfit: "Aira Silk Kaftan & Zoya Velvet"
+    outfit: "Meher Emerald Velvet Suit + Modal Hijab"
   },
   {
     id: 3,
-    name: "Dr. Samira Khan",
-    role: "Verified Client - New York, USA",
+    name: "Zainab Chaudhry",
+    role: "Lawyer & Connoisseur - Lahore / London",
     image: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=80&w=300&auto=format&fit=crop",
-    quote: "Finding authentic bespoke modest luxury online can be challenging, but Zulfa Boutiq sets the golden benchmark. Beautiful packaging, exquisite handwork!",
+    quote: "The pure supima lawn quality with schiffli chikankari and authentic silk dupatta is identical to Pakistan's premier designer runways. Unstitched fabric cuts were generous and immaculate.",
     rating: 5,
-    outfit: "Mehtab Ivory Sharara Suit"
-  }
-];
-
-const INSTAGRAM_GALLERY = [
-  {
-    id: 1,
-    image: "https://images.unsplash.com/photo-1583391733956-3750e0ff4e8b?q=80&w=600&auto=format&fit=crop",
-    tag: "@zulfaboutiq #ZulfaBride",
-    caption: "Royal heritage in crimson threads"
-  },
-  {
-    id: 2,
-    image: "https://images.unsplash.com/photo-1566737236500-c8ac43014a67?q=80&w=600&auto=format&fit=crop",
-    tag: "@zulfaboutiq #FestiveGlow",
-    caption: "Velvet midnight dreams"
-  },
-  {
-    id: 3,
-    image: "https://images.unsplash.com/photo-1515372039744-b8f02a3ae446?q=80&w=600&auto=format&fit=crop",
-    tag: "@zulfaboutiq #EverydayLuxe",
-    caption: "Golden hour in pure hammered silk"
-  },
-  {
-    id: 4,
-    image: "https://images.unsplash.com/photo-1572804013309-59a88b7e92f1?q=80&w=600&auto=format&fit=crop",
-    tag: "@zulfaboutiq #HauteCouture",
-    caption: "Hand-embellished pearl perfection"
-  },
-  {
-    id: 5,
-    image: "https://images.unsplash.com/photo-1550614000-4895a10e1bfd?q=80&w=600&auto=format&fit=crop",
-    tag: "@zulfaboutiq #FusionVibes",
-    caption: "Modern cutdana runway cape"
-  },
-  {
-    id: 6,
-    image: "https://images.unsplash.com/photo-1490481651871-ab68de25d43d?q=80&w=600&auto=format&fit=crop",
-    tag: "@zulfaboutiq #WalimaGlam",
-    caption: "Ethereal pastel tulle symphony"
+    outfit: "Afreen Pastel Mint Luxury Lawn"
   }
 ];
